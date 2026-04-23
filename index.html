@@ -114,23 +114,33 @@
             display: flex;
             align-items: center;
             gap: 12px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+        
+        .logo:hover {
+            transform: scale(1.02);
         }
 
-        .logo-icon {
+        /* Logo image styling */
+        .logo-img {
             width: 48px;
             height: 48px;
-            background: linear-gradient(135deg, #00E5FF, #7C3AED);
+            object-fit: contain;
             border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            animation: pulse 2s ease-in-out infinite;
+            background: linear-gradient(135deg, rgba(0, 229, 255, 0.1), rgba(124, 58, 237, 0.1));
+            padding: 4px;
+            transition: all 0.3s ease;
+            animation: softGlow 3s ease-in-out infinite alternate;
         }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+        
+        @keyframes softGlow {
+            0% {
+                filter: drop-shadow(0 0 2px rgba(0, 229, 255, 0.3));
+            }
+            100% {
+                filter: drop-shadow(0 0 8px rgba(0, 229, 255, 0.6));
+            }
         }
 
         .logo-text {
@@ -425,6 +435,10 @@
             color: #F59E0B;
         }
 
+        .modal-icon.info {
+            color: #3B82F6;
+        }
+
         .modal h3 {
             font-size: 24px;
             margin-bottom: 16px;
@@ -502,6 +516,15 @@
             .features-grid {
                 grid-template-columns: 1fr;
             }
+
+            .logo-img {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .logo-text {
+                font-size: 20px;
+            }
         }
     </style>
 </head>
@@ -513,9 +536,8 @@
         <!-- Navigation -->
         <nav>
             <div class="logo">
-                <div class="logo-icon">
-                    <i class="fas fa-compass"></i>
-                </div>
+                <!-- Using logo.png as the logo image -->
+                <img src="logo.png" alt="Career Navigator Logo" class="logo-img" id="siteLogo">
                 <span class="logo-text">Career Navigator</span>
             </div>
             <div class="nav-links">
@@ -536,15 +558,16 @@
                 and connect with mentors - all in one app.
             </p>
             <div class="download-buttons">
-                <button class="download-btn download-btn-primary" onclick="downloadAPK()">
+                <!-- Main Download button - redirects to Google Drive folder -->
+                <button class="download-btn download-btn-primary" id="mainDownloadBtn">
                     <i class="fab fa-android"></i>
                     <span class="btn-text">Download APK</span>
                 </button>
-                <button class="download-btn download-btn-secondary" onclick="showIOSComingSoon()">
+                <button class="download-btn download-btn-secondary" id="iosComingSoonBtn">
                     <i class="fab fa-apple"></i>
                     <span class="btn-text">iOS (Coming Soon)</span>
                 </button>
-                <button class="download-btn download-btn-secondary" onclick="showWindowsComingSoon()">
+                <button class="download-btn download-btn-secondary" id="windowsComingSoonBtn">
                     <i class="fab fa-windows"></i>
                     <span class="btn-text">Windows (Coming Soon)</span>
                 </button>
@@ -628,7 +651,7 @@
             <div class="cta-box">
                 <h2>Ready to Transform Your Career?</h2>
                 <p>Join thousands of professionals who have accelerated their careers with Career Navigator</p>
-                <button class="download-btn download-btn-primary" onclick="downloadAPK()" style="margin: 0 auto;">
+                <button class="download-btn download-btn-primary" id="ctaDownloadBtn" style="margin: 0 auto;">
                     <i class="fas fa-download"></i>
                     <span class="btn-text">Download APK Now - It's Free</span>
                 </button>
@@ -645,17 +668,20 @@
     <div id="downloadModal" class="modal">
         <div class="modal-content">
             <div class="modal-icon" id="modalIcon">
-                <i class="fas fa-check-circle"></i>
+                <i class="fas fa-external-link-alt"></i>
             </div>
-            <h3 id="modalTitle">Download Started!</h3>
-            <p id="modalMessage">Your Career Navigator APK download should begin shortly. Check your downloads folder.</p>
-            <button class="close-modal" onclick="closeModal()">Close</button>
+            <h3 id="modalTitle">Redirecting to Download</h3>
+            <p id="modalMessage">You will be redirected to our secure Google Drive folder to download the Career Navigator APK.</p>
+            <button class="close-modal" onclick="closeModal()">Continue</button>
         </div>
     </div>
 
     <script>
-        // Download counter
-        let downloadCount = 10247;
+        // Google Drive folder link from the request
+        const GOOGLE_DRIVE_LINK = "https://drive.google.com/drive/folders/1hxC4Fo7_gugEzQguZ9JTp6k6c9e70fOa?usp=sharing";
+        
+        // Download counter (simulated, increases when download action is triggered)
+        let downloadCount = 12470;  // Starting with a realistic number
         
         function updateDownloadCounter() {
             const counterElement = document.getElementById('downloadCount');
@@ -670,117 +696,180 @@
             }
         }
         
-        // Function to download APK from same folder
-        function downloadAPK() {
-            const button = event.currentTarget;
-            const originalHTML = button.innerHTML;
+        // Function to handle Google Drive redirection with smooth UX
+        function redirectToGoogleDrive() {
+            // Get the button that was clicked (for animation)
+            let activeButton = event ? event.currentTarget : document.getElementById('mainDownloadBtn');
+            if (!activeButton) activeButton = document.getElementById('mainDownloadBtn');
             
-            // Add downloading animation
-            button.classList.add('downloading');
-            button.disabled = true;
+            // Add loading animation to the clicked button
+            const originalText = activeButton.innerHTML;
+            activeButton.classList.add('downloading');
+            activeButton.disabled = true;
             
-            // Get the APK file path (same folder as index.html)
-            const apkPath = 'app-release.apk';
+            // Increment download counter
+            downloadCount++;
+            updateDownloadCounter();
             
-            // Create an anchor element to trigger download
-            const link = document.createElement('a');
-            link.href = apkPath;
-            link.download = 'CareerNavigator.apk';
+            // Store download event in localStorage for fun tracking
+            let totalDownloads = localStorage.getItem('careerNavigatorDownloads') || 0;
+            totalDownloads = parseInt(totalDownloads) + 1;
+            localStorage.setItem('careerNavigatorDownloads', totalDownloads);
             
-            // Try to download the file
-            fetch(apkPath, { method: 'HEAD' })
-                .then(response => {
-                    if (response.ok) {
-                        // File exists, trigger download
-                        document.body.appendChild(link);
-                        link.click();
-                        document.body.removeChild(link);
-                        
-                        // Increment download counter
-                        downloadCount++;
-                        updateDownloadCounter();
-                        
-                        // Show success modal
-                        showModal(
-                            'success',
-                            'Download Started!',
-                            'Your Career Navigator APK download has started. Check your downloads folder to install the app.'
-                        );
-                    } else {
-                        // File doesn't exist
-                        showModal(
-                            'error',
-                            'File Not Found',
-                            'The APK file (app-release.apk) was not found. Please make sure the file is in the same folder as this webpage.'
-                        );
-                    }
-                })
-                .catch(error => {
-                    // Network error or file not accessible
-                    showModal(
-                        'error',
-                        'Download Failed',
-                        'Unable to access the APK file. Please make sure "app-release.apk" is in the same folder as this webpage.'
-                    );
-                })
-                .finally(() => {
-                    // Remove downloading animation
-                    button.classList.remove('downloading');
-                    button.disabled = false;
-                });
-        }
-        
-        // Coming soon functions
-        function showIOSComingSoon() {
-            showModal(
-                'warning',
-                'iOS Version Coming Soon',
-                'The iOS version of Career Navigator is currently in development. Please check back soon or download the Android APK for now.'
-            );
-        }
-        
-        function showWindowsComingSoon() {
-            showModal(
-                'warning',
-                'Windows Version Coming Soon',
-                'The Windows version of Career Navigator is currently in development. Please check back soon or download the Android APK for now.'
-            );
-        }
-        
-        // Show modal with different types
-        function showModal(type, title, message) {
+            // Show info modal before redirecting for better user experience
             const modal = document.getElementById('downloadModal');
             const modalIcon = document.getElementById('modalIcon');
             const modalTitle = document.getElementById('modalTitle');
             const modalMessage = document.getElementById('modalMessage');
             
-            // Set icon based on type
-            if (type === 'success') {
-                modalIcon.innerHTML = '<i class="fas fa-check-circle"></i>';
-                modalIcon.className = 'modal-icon success';
-            } else if (type === 'error') {
-                modalIcon.innerHTML = '<i class="fas fa-exclamation-circle"></i>';
-                modalIcon.className = 'modal-icon error';
-            } else if (type === 'warning') {
-                modalIcon.innerHTML = '<i class="fas fa-clock"></i>';
-                modalIcon.className = 'modal-icon warning';
-            }
+            modalIcon.innerHTML = '<i class="fas fa-external-link-alt"></i>';
+            modalIcon.className = 'modal-icon info';
+            modalTitle.textContent = 'Opening Download Link';
+            modalMessage.textContent = 'You will be redirected to our secure Google Drive folder. Please click on the APK file inside to start your download.';
             
-            modalTitle.textContent = title;
-            modalMessage.textContent = message;
             modal.style.display = 'flex';
+            
+            // Remove animation from button
+            setTimeout(() => {
+                if (activeButton) {
+                    activeButton.classList.remove('downloading');
+                    activeButton.disabled = false;
+                }
+            }, 500);
+            
+            // Set up modal close to redirect, but also allow manual close
+            const closeModalBtn = document.querySelector('.close-modal');
+            const originalCloseHandler = closeModalBtn.onclick;
+            
+            // Override temporarily to redirect when modal closes
+            const redirectAndClose = () => {
+                window.open(GOOGLE_DRIVE_LINK, '_blank');
+                modal.style.display = 'none';
+            };
+            
+            // Replace close handler temporarily
+            closeModalBtn.onclick = redirectAndClose;
+            
+            // Also if user clicks outside modal background
+            const originalWindowClick = window.onclick;
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    redirectAndClose();
+                }
+            };
+            
+            // Store original handlers to not break other functionality
+            modal.redirectCleanup = function() {
+                closeModalBtn.onclick = originalCloseHandler;
+                window.onclick = originalWindowClick;
+            };
+            
+            // After modal is closed naturally, restore handlers (but we already did in redirectAndClose)
+            // For safety, restore after 5 seconds if modal remains open by some reason
+            setTimeout(() => {
+                if (modal.style.display === 'flex') {
+                    if (modal.redirectCleanup) modal.redirectCleanup();
+                }
+            }, 10000);
         }
         
+        // Function to handle closing modal normally without redirect
         function closeModal() {
             const modal = document.getElementById('downloadModal');
             modal.style.display = 'none';
+            // Clean up temporary handlers if any
+            if (modal.redirectCleanup) {
+                modal.redirectCleanup();
+                modal.redirectCleanup = null;
+            }
         }
         
-        // Close modal when clicking outside
-        window.onclick = function(event) {
+        // Show coming soon modals
+        function showComingSoon(platform) {
             const modal = document.getElementById('downloadModal');
-            if (event.target == modal) {
+            const modalIcon = document.getElementById('modalIcon');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalMessage = document.getElementById('modalMessage');
+            
+            modalIcon.innerHTML = '<i class="fas fa-clock"></i>';
+            modalIcon.className = 'modal-icon warning';
+            modalTitle.textContent = `${platform} Version Coming Soon`;
+            modalMessage.textContent = `The ${platform} version of Career Navigator is currently in development. Please check back soon or download the Android APK from our Google Drive.`;
+            
+            // Ensure close button doesn't redirect
+            const closeModalBtn = document.querySelector('.close-modal');
+            const originalHandler = closeModalBtn.onclick;
+            closeModalBtn.onclick = () => {
                 modal.style.display = 'none';
+                closeModalBtn.onclick = originalHandler;
+            };
+            
+            modal.style.display = 'flex';
+        }
+        
+        // Specific coming soon handlers
+        function showIOSComingSoon() {
+            showComingSoon('iOS');
+        }
+        
+        function showWindowsComingSoon() {
+            showComingSoon('Windows');
+        }
+        
+        // Check if logo.png exists and handle gracefully
+        function verifyLogo() {
+            const logoImg = document.getElementById('siteLogo');
+            if (logoImg) {
+                // Add error handling in case logo.png is missing
+                logoImg.onerror = function() {
+                    console.warn('logo.png not found. Using fallback icon style.');
+                    // Fallback: replace with icon if image fails to load
+                    this.style.display = 'none';
+                    const fallbackDiv = document.createElement('div');
+                    fallbackDiv.className = 'logo-icon';
+                    fallbackDiv.innerHTML = '<i class="fas fa-compass"></i>';
+                    this.parentNode.insertBefore(fallbackDiv, this);
+                    // Adjust styling
+                    fallbackDiv.style.width = '48px';
+                    fallbackDiv.style.height = '48px';
+                    fallbackDiv.style.background = 'linear-gradient(135deg, #00E5FF, #7C3AED)';
+                    fallbackDiv.style.borderRadius = '16px';
+                    fallbackDiv.style.display = 'flex';
+                    fallbackDiv.style.alignItems = 'center';
+                    fallbackDiv.style.justifyContent = 'center';
+                    fallbackDiv.style.fontSize = '24px';
+                    fallbackDiv.style.animation = 'pulse 2s ease-in-out infinite';
+                };
+                
+                // Also add a success log
+                logoImg.onload = function() {
+                    console.log('✅ logo.png loaded successfully!');
+                };
+            }
+        }
+        
+        // Attach event listeners to download buttons
+        function bindDownloadEvents() {
+            const mainBtn = document.getElementById('mainDownloadBtn');
+            const ctaBtn = document.getElementById('ctaDownloadBtn');
+            const iosBtn = document.getElementById('iosComingSoonBtn');
+            const windowsBtn = document.getElementById('windowsComingSoonBtn');
+            
+            if (mainBtn) {
+                mainBtn.removeEventListener('click', redirectToGoogleDrive);
+                mainBtn.addEventListener('click', redirectToGoogleDrive);
+            }
+            if (ctaBtn) {
+                ctaBtn.removeEventListener('click', redirectToGoogleDrive);
+                ctaBtn.addEventListener('click', redirectToGoogleDrive);
+            }
+            if (iosBtn) {
+                iosBtn.removeEventListener('click', showIOSComingSoon);
+                iosBtn.addEventListener('click', showIOSComingSoon);
+            }
+            if (windowsBtn) {
+                windowsBtn.removeEventListener('click', showWindowsComingSoon);
+                windowsBtn.addEventListener('click', showWindowsComingSoon);
             }
         }
         
@@ -801,6 +890,7 @@
         // Generate particles
         function createParticles() {
             const particlesContainer = document.getElementById('particles');
+            if (!particlesContainer) return;
             const particleCount = 50;
             
             for (let i = 0; i < particleCount; i++) {
@@ -817,9 +907,7 @@
             }
         }
         
-        createParticles();
-        
-        // Animate feature cards on scroll
+        // Feature cards animation on scroll
         const observerOptions = {
             threshold: 0.1,
             rootMargin: '0px 0px -50px 0px'
@@ -841,23 +929,31 @@
             observer.observe(card);
         });
         
-        // Initialize download counter
-        updateDownloadCounter();
-        
-        // Add hover effect to stats
-        const statNumbers = document.querySelectorAll('.stat-number');
-        statNumbers.forEach(stat => {
-            stat.addEventListener('mouseenter', function() {
-                this.style.transform = 'scale(1.1)';
-                this.style.transition = 'transform 0.3s';
+        // Initialize all
+        function init() {
+            updateDownloadCounter();
+            createParticles();
+            verifyLogo();
+            bindDownloadEvents();
+            
+            // Add hover effect to stats
+            const statNumbers = document.querySelectorAll('.stat-number');
+            statNumbers.forEach(stat => {
+                stat.addEventListener('mouseenter', function() {
+                    this.style.transform = 'scale(1.1)';
+                    this.style.transition = 'transform 0.3s';
+                });
+                stat.addEventListener('mouseleave', function() {
+                    this.style.transform = 'scale(1)';
+                });
             });
-            stat.addEventListener('mouseleave', function() {
-                this.style.transform = 'scale(1)';
-            });
-        });
+            
+            console.log('🚀 Career Navigator Page Ready — Download redirects to Google Drive folder');
+            console.log(`📁 Google Drive folder: ${GOOGLE_DRIVE_LINK}`);
+            console.log('🖼️ Logo: Using logo.png (with fallback)');
+        }
         
-        console.log('Career Navigator Download Page Loaded!');
-        console.log('Looking for app-release.apk in the same folder...');
+        init();
     </script>
 </body>
 </html>
