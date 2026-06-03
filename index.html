@@ -652,6 +652,127 @@ footer{
   .download-section{padding:48px 28px;}
   h1{font-size:36px;}
 }
+
+/* ── TEAM ── */
+.team-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:40px;
+}
+.team-card{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:20px;padding:24px;
+  display:flex;gap:20px;align-items:flex-start;
+  transition:border-color 0.3s,transform 0.3s;
+  position:relative;overflow:hidden;
+}
+.team-card::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at 0% 0%,rgba(0,229,255,0.03),transparent 60%);
+}
+.team-card:hover{border-color:rgba(0,229,255,0.25);transform:translateY(-3px);}
+.team-avatar-wrap{
+  position:relative;flex-shrink:0;
+}
+.team-avatar{
+  width:72px;height:72px;border-radius:50%;
+  object-fit:cover;border:2px solid rgba(0,229,255,0.2);
+  display:block;
+}
+.team-initials{
+  width:72px;height:72px;border-radius:50%;
+  background:linear-gradient(135deg,rgba(0,229,255,0.15),rgba(155,93,229,0.15));
+  border:2px solid rgba(0,229,255,0.2);
+  align-items:center;justify-content:center;
+  font-family:'Syne',sans-serif;font-size:22px;font-weight:800;
+  color:var(--cyan);
+}
+.team-avatar-glow{
+  position:absolute;inset:-4px;border-radius:50%;
+  background:radial-gradient(circle,rgba(0,229,255,0.15),transparent 70%);
+  z-index:-1;
+}
+.team-info{flex:1;min-width:0;}
+.team-name{
+  font-family:'Syne',sans-serif;font-size:15px;font-weight:700;
+  color:var(--text);margin-bottom:6px;line-height:1.3;
+}
+.team-role{
+  display:inline-block;
+  background:var(--cyan-dim);border:1px solid rgba(0,229,255,0.2);
+  border-radius:100px;padding:3px 10px;
+  font-size:11px;font-weight:600;color:var(--cyan);
+  margin-bottom:10px;
+}
+.team-desc{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:14px;}
+.team-links{display:flex;gap:8px;flex-wrap:wrap;}
+.team-link{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:5px 12px;border-radius:100px;
+  font-size:11px;font-weight:600;text-decoration:none;
+  transition:all 0.2s;border:1px solid;
+}
+.team-link svg{width:13px;height:13px;flex-shrink:0;}
+.team-link.github{
+  color:var(--text);border-color:var(--border);
+  background:rgba(255,255,255,0.03);
+}
+.team-link.github:hover{background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.2);}
+.team-link.linkedin{
+  color:#0A66C2;border-color:rgba(10,102,194,0.3);
+  background:rgba(10,102,194,0.08);
+}
+.team-link.linkedin:hover{background:rgba(10,102,194,0.15);}
+.team-link.email{
+  color:#EF4444;border-color:rgba(239,68,68,0.3);
+  background:rgba(239,68,68,0.08);
+}
+.team-link.email:hover{background:rgba(239,68,68,0.15);}
+
+/* Tech box */
+.tech-box{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:24px;padding:40px;
+  display:grid;grid-template-columns:1fr auto;gap:40px;align-items:start;
+}
+.tech-tags{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px;}
+.tech-tag{
+  background:var(--cyan-dim);border:1px solid rgba(0,229,255,0.2);
+  border-radius:100px;padding:6px 14px;
+  font-size:12px;font-weight:600;color:var(--cyan);
+  transition:all 0.2s;cursor:default;
+}
+.tech-tag:hover{background:rgba(0,229,255,0.2);border-color:rgba(0,229,255,0.4);}
+.github-card{
+  background:rgba(255,255,255,0.02);border:1px solid var(--border);
+  border-radius:18px;padding:24px;min-width:280px;
+  display:flex;flex-direction:column;gap:16px;
+  transition:border-color 0.2s;
+}
+.github-card:hover{border-color:rgba(0,229,255,0.2);}
+.github-card-icon{
+  width:48px;height:48px;border-radius:14px;
+  background:rgba(255,255,255,0.06);
+  display:flex;align-items:center;justify-content:center;
+}
+.github-card-icon svg{width:24px;height:24px;color:var(--text);}
+.github-card-title{
+  font-family:'Syne',sans-serif;font-size:16px;font-weight:700;
+  color:var(--text);margin-bottom:4px;
+}
+.github-card-sub{font-size:12px;color:var(--muted);margin-bottom:10px;}
+.github-card-stats{display:flex;gap:12px;flex-wrap:wrap;}
+.github-card-stats span{font-size:12px;color:var(--muted);}
+
+@media(max-width:900px){
+  .team-grid{grid-template-columns:1fr;}
+  .tech-box{grid-template-columns:1fr;}
+  .github-card{min-width:unset;}
+}
+@media(max-width:600px){
+  .team-card{flex-direction:column;align-items:center;text-align:center;}
+  .team-links{justify-content:center;}
+  .tech-box{padding:24px;}
+}
+
 </style>
 </head>
 <body>
@@ -677,6 +798,8 @@ footer{
   <div class="nav-links">
     <a href="#features">Features</a>
     <a href="#how">How it works</a>
+    <a href="#about">Team</a>
+    <a href="#about">Team</a>
     <a href="#download">Download</a>
   </div>
   <div class="nav-badge">Beta Live</div>
@@ -905,6 +1028,203 @@ footer{
   </div>
 </section>
 
+
+<!-- ABOUT / TEAM -->
+<section id="about" class="section" style="padding-top:0">
+  <div class="section-head reveal">
+    <div class="section-eyebrow">The Team</div>
+    <h2 class="section-title">Meet the builders</h2>
+    <p class="section-sub">Five passionate developers from ICT University behind Career Navigator.</p>
+  </div>
+
+  <!-- Team grid -->
+  <div class="team-grid reveal">
+
+    <div class="team-card">
+      <div class="team-avatar-wrap">
+        <img class="team-avatar" src="https://avatars.githubusercontent.com/TUHEU"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+          alt="Fahdil">
+        <div class="team-initials" style="display:none">TM</div>
+        <div class="team-avatar-glow"></div>
+      </div>
+      <div class="team-info">
+        <div class="team-name">Tuheu Tchoubi Pempeme Moussa Fahdil</div>
+        <div class="team-role">Lead Backend Developer &amp; Database Architect</div>
+        <p class="team-desc">Designed and implemented the Flask API, database schema, authentication system, and job listing module.</p>
+        <div class="team-links">
+          <a href="https://github.com/TUHEU" target="_blank" class="team-link github">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+            GitHub
+          </a>
+          <a href="https://www.linkedin.com/in/nadal-junior-63b5933a3/" target="_blank" class="team-link linkedin">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            LinkedIn
+          </a>
+          <a href="mailto:tuheu.moussa@ictuniversity.edu.cm" class="team-link email">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            Email
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="team-card">
+      <div class="team-avatar-wrap">
+        <img class="team-avatar" src="https://avatars.githubusercontent.com/techgirl911"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+          alt="Yuyar">
+        <div class="team-initials" style="display:none">YL</div>
+        <div class="team-avatar-glow"></div>
+      </div>
+      <div class="team-info">
+        <div class="team-name">Yuyar Lea-Barbara</div>
+        <div class="team-role">Lead Flutter Developer</div>
+        <p class="team-desc">Built the mobile UI, dashboard screens, navigation system, and chat integration.</p>
+        <div class="team-links">
+          <a href="https://github.com/techgirl911" target="_blank" class="team-link github">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+            GitHub
+          </a>
+          <a href="https://www.linkedin.com/in/yuyar-bongkem-71bb10345/" target="_blank" class="team-link linkedin">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            LinkedIn
+          </a>
+          <a href="mailto:yuyarbongkem@gmail.com" class="team-link email">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            Email
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="team-card">
+      <div class="team-avatar-wrap">
+        <img class="team-avatar" src="https://avatars.githubusercontent.com/getrudepink9-design"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+          alt="Getrude">
+        <div class="team-initials" style="display:none">NG</div>
+        <div class="team-avatar-glow"></div>
+      </div>
+      <div class="team-info">
+        <div class="team-name">NDZEKA GETRUDE BERINYUY</div>
+        <div class="team-role">UI/UX Designer &amp; Frontend Developer</div>
+        <p class="team-desc">Created the design system, theming engine, and all screen layouts with responsive design.</p>
+        <div class="team-links">
+          <a href="https://github.com/getrudepink9-design" target="_blank" class="team-link github">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+            GitHub
+          </a>
+          <a href="https://www.linkedin.com/in/getrude-pink-b51747339" target="_blank" class="team-link linkedin">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            LinkedIn
+          </a>
+          <a href="mailto:getrudepink@gmail.com" class="team-link email">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            Email
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="team-card">
+      <div class="team-avatar-wrap">
+        <img class="team-avatar" src="https://avatars.githubusercontent.com/AyuknyamndiICTU"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+          alt="Ayuk">
+        <div class="team-initials" style="display:none">AB</div>
+        <div class="team-avatar-glow"></div>
+      </div>
+      <div class="team-info">
+        <div class="team-name">Ayukeyong Dohbila Nyamndi Benjunior</div>
+        <div class="team-role">DevOps &amp; Security Engineer</div>
+        <p class="team-desc">Deployed the backend on Contabo VPS, configured PM2, managed server security, and CI/CD pipelines.</p>
+        <div class="team-links">
+          <a href="https://github.com/AyuknyamndiICTU" target="_blank" class="team-link github">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+            GitHub
+          </a>
+          <a href="https://www.linkedin.com/in/ayukeyong-nyamndi-a74176227/" target="_blank" class="team-link linkedin">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            LinkedIn
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="team-card">
+      <div class="team-avatar-wrap">
+        <img class="team-avatar" src="https://avatars.githubusercontent.com/Laetitia-ml"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+          alt="Gloria">
+        <div class="team-initials" style="display:none">GL</div>
+        <div class="team-avatar-glow"></div>
+      </div>
+      <div class="team-info">
+        <div class="team-name">MBOCK LOWE Gloria Laetitia</div>
+        <div class="team-role">Quality Assurance &amp; Product Manager</div>
+        <p class="team-desc">Manages testing, user acceptance, and coordinates feature releases across the team.</p>
+        <div class="team-links">
+          <a href="https://github.com/Laetitia-ml" target="_blank" class="team-link github">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+            GitHub
+          </a>
+          <a href="https://www.linkedin.com/in/gloria-laetitia-b3b3b0378/" target="_blank" class="team-link linkedin">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            LinkedIn
+          </a>
+          <a href="mailto:bnyamndi@gmail.com" class="team-link email">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            Email
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /team-grid -->
+
+  <!-- Tech stack + GitHub link -->
+  <div class="tech-box reveal">
+    <div class="tech-box-left">
+      <div class="section-eyebrow" style="text-align:left;display:inline-block;margin-bottom:16px">Tech Stack</div>
+      <div class="tech-tags">
+        <span class="tech-tag">Flutter</span>
+        <span class="tech-tag">Dart</span>
+        <span class="tech-tag">Python</span>
+        <span class="tech-tag">Flask</span>
+        <span class="tech-tag">MySQL</span>
+        <span class="tech-tag">JWT Auth</span>
+        <span class="tech-tag">Cloudinary</span>
+        <span class="tech-tag">Brevo</span>
+        <span class="tech-tag">PM2</span>
+        <span class="tech-tag">Contabo VPS</span>
+        <span class="tech-tag">Gemini AI</span>
+        <span class="tech-tag">WebSocket</span>
+      </div>
+    </div>
+    <div class="tech-box-right">
+      <div class="github-card">
+        <div class="github-card-icon">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+        </div>
+        <div class="github-card-text">
+          <div class="github-card-title">Career Navigator</div>
+          <div class="github-card-sub">Open source · ICT University · OOA&amp;D</div>
+          <div class="github-card-stats">
+            <span>⭐ Flutter + Python</span>
+            <span>🔒 MIT License</span>
+          </div>
+        </div>
+        <a href="https://github.com/TUHEU" target="_blank" class="btn btn-primary btn-sm" style="white-space:nowrap;margin-top:0;text-decoration:none">
+          <svg viewBox="0 0 24 24" fill="currentColor" style="width:16px;height:16px"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          View on GitHub
+        </a>
+      </div>
+    </div>
+  </div>
+
+</section>
+
 <!-- DOWNLOAD -->
 <section id="download" class="section" style="padding-top:0">
   <div class="download-section reveal">
@@ -956,6 +1276,7 @@ footer{
   <div class="footer-links">
     <a href="#features">Features</a>
     <a href="#how">How it works</a>
+    <a href="#about">Team</a>
     <a href="#download">Download</a>
   </div>
   <div class="footer-copy">© 2026 Career Navigator · ICT University · OOA&amp;D Project</div>
