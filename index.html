@@ -17,22 +17,43 @@
 <meta property="og:description" content="AI-powered career platform for African professionals.">
 <meta property="og:image" content="logo.png">
 <meta name="theme-color" content="#00E5FF">
+
+<!-- ── Fonts ── -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap" rel="stylesheet">
+
+<!-- ── Font Awesome for Icons ── -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 <style>
 :root {
   --cyan: #00E5FF;
+  --cyan-dark: #00B8D4;
   --cyan-dim: rgba(0,229,255,0.12);
   --cyan-glow: rgba(0,229,255,0.25);
+  --cyan-soft: rgba(0,229,255,0.06);
   --purple: #9B5DE5;
+  --purple-dim: rgba(155,93,229,0.12);
+  --pink: #EC4899;
   --bg: #060912;
   --bg2: #0C1220;
+  --bg3: #111B2E;
   --surface: rgba(255,255,255,0.03);
+  --surface-hover: rgba(255,255,255,0.06);
   --border: rgba(255,255,255,0.07);
+  --border-light: rgba(255,255,255,0.12);
   --text: #F0F4FF;
+  --text-secondary: #B8C5E0;
   --muted: #6B7B99;
+  --sub: #8A9BB8;
   --danger: #EF4444;
   --success: #10B981;
+  --warning: #F59E0B;
+  --shadow: 0 8px 32px rgba(0,0,0,0.4);
+  --shadow-glow: 0 8px 40px rgba(0,229,255,0.15);
+  --radius: 24px;
+  --radius-sm: 12px;
+  --transition: all 0.3s cubic-bezier(.25,.46,.45,.94);
 }
 
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -47,7 +68,48 @@ body{
   cursor:none;
 }
 
-/* ── Custom cursor ── */
+/* ════════════════════════════════════════
+   SNOW / PARTICLE EFFECT (Bottom to Top)
+════════════════════════════════════════ */
+.snow-container{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  pointer-events:none;
+  z-index:0;
+  overflow:hidden;
+}
+
+.snowflake{
+  position:absolute;
+  bottom:-10px;
+  color:rgba(0,229,255,0.15);
+  font-size:12px;
+  animation:snowRise linear infinite;
+  pointer-events:none;
+  user-select:none;
+}
+
+@keyframes snowRise{
+  0%{
+    transform:translateY(0) rotate(0deg) scale(0.8);
+    opacity:0;
+  }
+  10%{
+    opacity:1;
+  }
+  90%{
+    opacity:1;
+  }
+  100%{
+    transform:translateY(-110vh) rotate(720deg) scale(1.2);
+    opacity:0;
+  }
+}
+
+/* ── Custom Cursor ── */
 #cursor{
   position:fixed;width:10px;height:10px;
   background:var(--cyan);border-radius:50%;
@@ -65,7 +127,7 @@ body{
 }
 body:hover #cursor{opacity:1;}
 
-/* ── Noise overlay ── */
+/* ── Noise Overlay ── */
 body::before{
   content:'';
   position:fixed;inset:0;
@@ -73,7 +135,7 @@ body::before{
   pointer-events:none;z-index:0;opacity:0.5;
 }
 
-/* ── Radial mesh bg ── */
+/* ── Mesh Background ── */
 .mesh{
   position:fixed;inset:0;z-index:0;pointer-events:none;
   background:
@@ -87,7 +149,7 @@ body::before{
   100%{filter:hue-rotate(20deg);}
 }
 
-/* ── Grid lines ── */
+/* ── Grid Lines ── */
 .grid-lines{
   position:fixed;inset:0;z-index:0;pointer-events:none;
   background-image:
@@ -114,6 +176,38 @@ body::before{
 
 /* ── Layout ── */
 .wrap{max-width:1200px;margin:0 auto;padding:0 32px;position:relative;z-index:1;}
+
+/* ════════════════════════════════════════
+   BACK BUTTON
+════════════════════════════════════════ */
+.back-button-wrap{
+  position:fixed;top:100px;left:24px;z-index:100;
+}
+.back-btn{
+  display:flex;align-items:center;gap:10px;
+  background:rgba(12,18,32,0.85);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  border:1px solid var(--border);
+  border-radius:60px;
+  padding:10px 20px 10px 16px;
+  color:var(--text);
+  font-size:13px;font-weight:600;
+  font-family:'DM Sans',sans-serif;
+  cursor:pointer;
+  transition:var(--transition);
+  box-shadow:var(--shadow);
+}
+.back-btn:hover{
+  border-color:var(--cyan);
+  transform:translateX(-4px);
+  box-shadow:var(--shadow-glow);
+}
+.back-btn i{
+  font-size:16px;
+  color:var(--cyan);
+}
+.back-btn span{color:var(--muted);font-weight:400;}
 
 /* ── NAV ── */
 nav{
@@ -164,7 +258,7 @@ nav{
 
 /* ── HERO ── */
 .hero{
-  padding:100px 0 80px;
+  padding:80px 0 60px;
   display:grid;grid-template-columns:1fr 1fr;
   gap:60px;align-items:center;
 }
@@ -175,7 +269,6 @@ nav{
   text-transform:uppercase;color:var(--cyan);
   margin-bottom:20px;
 }
-.hero-eyebrow svg{width:16px;height:16px;}
 .hero h1{
   font-family:'Syne',sans-serif;
   font-size:clamp(40px,5.5vw,68px);
@@ -187,6 +280,11 @@ nav{
   background:linear-gradient(135deg,var(--cyan) 0%,var(--purple) 100%);
   -webkit-background-clip:text;background-clip:text;color:transparent;
   position:relative;display:inline-block;
+}
+.hero h1 .accent::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--cyan),var(--purple));
+  border-radius:2px;
 }
 .hero-desc{
   font-size:17px;color:var(--muted);line-height:1.7;
@@ -200,7 +298,7 @@ nav{
   padding:14px 28px;border-radius:14px;
   font-size:15px;font-weight:600;font-family:'DM Sans',sans-serif;
   text-decoration:none;cursor:pointer;border:none;
-  transition:all 0.25s cubic-bezier(.25,.46,.45,.94);
+  transition:var(--transition);
   position:relative;overflow:hidden;white-space:nowrap;
 }
 .btn::before{
@@ -222,15 +320,15 @@ nav{
   background:var(--surface);
   border:1px solid var(--border);
   color:var(--text);
-  -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
 }
 .btn-ghost:hover{
-  background:rgba(255,255,255,0.06);
-  border-color:rgba(255,255,255,0.15);
+  background:var(--surface-hover);
+  border-color:var(--border-light);
   transform:translateY(-2px);
 }
-.btn svg{width:18px;height:18px;flex-shrink:0;}
-.btn-sm{padding:10px 20px;font-size:13px;border-radius:10px;}
+.btn i{font-size:18px;flex-shrink:0;}
 
 .hero-meta{
   display:flex;align-items:center;gap:16px;
@@ -248,7 +346,7 @@ nav{
 .hero-meta-label{font-size:12px;color:var(--muted);letter-spacing:0.04em;}
 .hero-meta-div{width:1px;height:36px;background:var(--border);}
 
-/* ── Phone mockup ── */
+/* ── Phone Mockup ── */
 .hero-right{display:flex;justify-content:center;align-items:center;position:relative;}
 .phone-wrap{
   position:relative;
@@ -264,8 +362,7 @@ nav{
   filter:blur(30px);z-index:0;
   animation:glowPulse 4s ease-in-out infinite alternate;
 }
-@keyframes glowPulse{0%{opacity:0.4;}100%{opacity:0.8;}
-}
+@keyframes glowPulse{0%{opacity:0.4;}100%{opacity:0.8;}}
 .phone-frame{
   width:260px;height:520px;
   background:linear-gradient(160deg,#1A2340,#0C1628);
@@ -297,7 +394,7 @@ nav{
 .phone-card{
   background:rgba(0,229,255,0.05);border:1px solid rgba(0,229,255,0.15);
   border-radius:16px;padding:14px;margin-bottom:10px;
-  transition:all 0.3s;
+  transition:var(--transition);
 }
 .phone-card:hover{background:rgba(0,229,255,0.1);}
 .phone-card-label{font-size:10px;color:var(--cyan);font-weight:600;letter-spacing:0.08em;margin-bottom:6px;}
@@ -317,7 +414,7 @@ nav{
   display:inline-flex;align-items:center;gap:6px;
   background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);
   border-radius:100px;padding:4px 10px;
-  font-size:10px;font-weight:600;color:#10B981;margin-top:8px;
+  font-size:10px;font-weight:600;color:var(--success);margin-top:8px;
 }
 .phone-ai-bubble{
   background:linear-gradient(135deg,rgba(0,229,255,0.08),rgba(155,93,229,0.08));
@@ -345,19 +442,19 @@ nav{
   font-size:9px;color:var(--muted);
 }
 .phone-nav-icon.active{color:var(--cyan);}
-.phone-nav-icon svg{width:20px;height:20px;}
+.phone-nav-icon i{font-size:18px;}
 
-/* floating tags */
+/* ── Floating Tags ── */
 .float-tag{
   position:absolute;
   background:var(--bg2);border:1px solid var(--border);
   border-radius:100px;padding:8px 14px;
   font-size:12px;font-weight:600;color:var(--text);
-  white-space:nowrap;-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
+  white-space:nowrap;backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
   box-shadow:0 8px 32px rgba(0,0,0,0.4);
   animation:tagFloat 4s ease-in-out infinite;
 }
-.float-tag::before{content:'';margin-right:6px;}
 .ft1{top:30px;left:-60px;animation-delay:0s;}
 .ft2{bottom:100px;right:-50px;animation-delay:-2s;}
 .ft3{top:160px;right:-70px;animation-delay:-1s;}
@@ -378,18 +475,17 @@ nav{
   animation:marquee 25s linear infinite;
 }
 .marquee-track:hover{animation-play-state:paused;}
-@keyframes marquee{0%{transform:translateX(0);}100%{transform:translateX(-50%);}
-}
+@keyframes marquee{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
 .marquee-item{
   display:flex;align-items:center;gap:10px;
   font-size:13px;font-weight:600;color:var(--muted);
   white-space:nowrap;letter-spacing:0.04em;
   text-transform:uppercase;
 }
-.marquee-item svg{width:16px;height:16px;color:var(--cyan);opacity:0.6;}
+.marquee-item i{font-size:16px;color:var(--cyan);opacity:0.6;}
 .marquee-dot{color:var(--cyan);opacity:0.4;font-size:18px;}
 
-/* ── FEATURES ── */
+/* ── SECTION ── */
 .section{padding:100px 0;position:relative;z-index:1;}
 .section-head{text-align:center;margin-bottom:64px;}
 .section-eyebrow{
@@ -406,6 +502,7 @@ nav{
 }
 .section-sub{font-size:17px;color:var(--muted);max-width:500px;margin:0 auto;}
 
+/* ── FEATURES GRID ── */
 .features-grid{
   display:grid;
   grid-template-columns:repeat(3,1fr);
@@ -440,7 +537,7 @@ nav{
   border:1px solid rgba(0,229,255,0.15);
   background:var(--cyan-dim);
 }
-.feat-icon svg{width:22px;height:22px;color:var(--cyan);}
+.feat-icon i{font-size:22px;color:var(--cyan);}
 .feat h3{
   font-family:'Syne',sans-serif;
   font-size:18px;font-weight:700;margin-bottom:10px;letter-spacing:-0.01em;
@@ -475,7 +572,7 @@ nav{
 .stat-l{font-size:13px;color:var(--muted);font-weight:500;}
 .stat-div{width:1px;background:var(--border);position:absolute;right:0;top:20%;height:60%;}
 
-/* ── HOW IT WORKS ── */
+/* ── STEPS ── */
 .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative;z-index:1;}
 .steps::before{
   content:'';position:absolute;top:32px;left:12.5%;right:12.5%;
@@ -493,7 +590,7 @@ nav{
   display:flex;align-items:center;justify-content:center;
   font-family:'Syne',sans-serif;font-size:20px;font-weight:800;
   color:var(--cyan);margin-bottom:24px;position:relative;
-  transition:all 0.3s;
+  transition:var(--transition);
 }
 .step-num::before{
   content:'';position:absolute;inset:-4px;border-radius:50%;
@@ -505,7 +602,7 @@ nav{
 .step h3{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;margin-bottom:10px;}
 .step p{font-size:14px;color:var(--muted);line-height:1.6;}
 
-/* ── DOWNLOAD CTA ── */
+/* ── DOWNLOAD SECTION ── */
 .download-section{
   background:var(--bg2);border:1px solid var(--border);
   border-radius:32px;padding:80px 60px;
@@ -537,7 +634,7 @@ nav{
   display:flex;align-items:center;gap:8px;
   font-size:13px;color:var(--muted);font-weight:500;
 }
-.dl-feat svg{width:16px;height:16px;color:var(--success);}
+.dl-feat i{font-size:16px;color:var(--success);}
 .dl-actions{
   display:flex;flex-direction:column;gap:12px;
   position:relative;z-index:1;min-width:220px;
@@ -547,34 +644,33 @@ nav{
   background:var(--surface);border:1px solid var(--border);
   border-radius:14px;padding:12px 18px;
   font-size:14px;font-weight:600;color:var(--muted);
-  cursor:pointer;transition:all 0.2s;
+  cursor:pointer;transition:var(--transition);
   position:relative;overflow:hidden;
 }
 .dl-platform::before{
   content:'';position:absolute;inset:0;
   background:linear-gradient(135deg,rgba(255,255,255,0.03),transparent);
 }
-.dl-platform:hover{border-color:rgba(255,255,255,0.2);color:var(--text);transform:translateX(4px);}
-.dl-platform svg{width:20px;height:20px;flex-shrink:0;}
+.dl-platform:hover{border-color:var(--border-light);color:var(--text);transform:translateX(4px);}
+.dl-platform i{font-size:20px;flex-shrink:0;}
 .dl-platform .soon-badge{
   margin-left:auto;font-size:10px;
   background:rgba(107,123,153,0.2);border-radius:6px;
   padding:2px 7px;color:var(--muted);font-weight:500;
 }
 
-/* Main download button */
 .dl-main{
   background:linear-gradient(135deg,var(--cyan),#0099CC);
   color:#020812;border:none;border-radius:14px;
   padding:16px 24px;
   display:flex;align-items:center;gap:10px;
   font-size:15px;font-weight:700;font-family:'Syne',sans-serif;
-  cursor:pointer;transition:all 0.25s;
+  cursor:pointer;transition:var(--transition);
   box-shadow:0 8px 32px var(--cyan-glow);
   width:100%;justify-content:center;
 }
 .dl-main:hover{transform:translateY(-2px);box-shadow:0 16px 48px var(--cyan-glow);}
-.dl-main svg{width:20px;height:20px;}
+.dl-main i{font-size:20px;}
 
 /* ── FOOTER ── */
 footer{
@@ -582,13 +678,14 @@ footer{
   border-top:1px solid var(--border);
   display:flex;align-items:center;justify-content:space-between;
   position:relative;z-index:1;
+  flex-wrap:wrap;gap:20px;
 }
 .footer-logo{
   font-family:'Syne',sans-serif;font-weight:800;font-size:18px;
   background:linear-gradient(135deg,var(--cyan),var(--purple));
   -webkit-background-clip:text;background-clip:text;color:transparent;
 }
-.footer-links{display:flex;gap:28px;}
+.footer-links{display:flex;gap:28px;flex-wrap:wrap;}
 .footer-links a{font-size:13px;color:var(--muted);text-decoration:none;transition:color 0.2s;}
 .footer-links a:hover{color:var(--text);}
 .footer-copy{font-size:12px;color:var(--muted);}
@@ -596,7 +693,8 @@ footer{
 /* ── MODAL ── */
 .modal-overlay{
   position:fixed;inset:0;z-index:1000;
-  background:rgba(0,0,0,0.8);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);
+  background:rgba(0,0,0,0.8);backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
   display:flex;align-items:center;justify-content:center;
   opacity:0;pointer-events:none;transition:opacity 0.3s;
 }
@@ -629,74 +727,38 @@ footer{
   color:#020812;border:none;border-radius:12px;
   padding:13px 28px;font-size:14px;font-weight:700;
   font-family:'Syne',sans-serif;cursor:pointer;
-  transition:all 0.2s;width:100%;
+  transition:var(--transition);width:100%;
 }
 .modal-close:hover{transform:translateY(-1px);box-shadow:0 8px 24px var(--cyan-glow);}
 
-/* ── Reveal animations ── */
+/* ── Reveal ── */
 .reveal{
   opacity:0;transform:translateY(24px);
   transition:opacity 0.65s ease,transform 0.65s ease;
 }
 .reveal.visible{opacity:1;transform:translateY(0);}
 
-/* ── RESPONSIVE ── */
-@media(max-width:900px){
-  .hero{grid-template-columns:1fr;text-align:center;padding:60px 0 40px;}
-  .hero-right{display:none;}
-  .hero-desc{margin:0 auto 40px;}
-  .hero-actions{justify-content:center;}
-  .hero-meta{justify-content:center;}
-  .features-grid{grid-template-columns:1fr;}
-  .steps{grid-template-columns:repeat(2,1fr);gap:40px;}
-  .steps::before{display:none;}
-  .stats-bar{grid-template-columns:repeat(2,1fr);gap:28px;}
-  .download-section{grid-template-columns:1fr;text-align:center;}
-  .dl-features{justify-content:center;}
-  .dl-actions{width:100%;max-width:320px;margin:0 auto;}
-  footer{flex-direction:column;gap:20px;text-align:center;}
-  .nav-links{display:none;}
-  .wrap{padding:0 20px;}
-}
-@media(max-width:600px){
-  .features-grid{grid-template-columns:1fr;}
-  .feat{padding:28px 24px;}
-  .stats-bar{padding:32px 24px;}
-  .download-section{padding:48px 28px;}
-  h1{font-size:36px;}
-}
-
-/* ── TEAM ── */
-.team-grid{
-  display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:40px;
-}
+/* ── ABOUT / TEAM ── */
 .team-card{
   background:var(--bg2);border:1px solid var(--border);
-  border-radius:20px;padding:24px;
-  display:flex;gap:20px;align-items:flex-start;
-  transition:border-color 0.3s,transform 0.3s;
+  border-radius:24px;padding:32px;
+  display:flex;gap:28px;align-items:flex-start;
+  transition:var(--transition);
   position:relative;overflow:hidden;
 }
 .team-card::before{
   content:'';position:absolute;inset:0;
   background:radial-gradient(circle at 0% 0%,rgba(0,229,255,0.03),transparent 60%);
 }
-.team-card:hover{border-color:rgba(0,229,255,0.25);transform:translateY(-3px);}
+.team-card:hover{border-color:rgba(0,229,255,0.25);transform:translateY(-4px);}
 .team-avatar-wrap{
   position:relative;flex-shrink:0;
 }
 .team-avatar{
-  width:72px;height:72px;border-radius:50%;
-  object-fit:cover;border:2px solid rgba(0,229,255,0.2);
+  width:100px;height:100px;border-radius:50%;
+  object-fit:cover;border:2px solid rgba(0,229,255,0.25);
   display:block;
-}
-.team-initials{
-  width:72px;height:72px;border-radius:50%;
-  background:linear-gradient(135deg,rgba(0,229,255,0.15),rgba(155,93,229,0.15));
-  border:2px solid rgba(0,229,255,0.2);
-  align-items:center;justify-content:center;
-  font-family:'Syne',sans-serif;font-size:22px;font-weight:800;
-  color:var(--cyan);
+  background:linear-gradient(135deg,var(--cyan),var(--purple));
 }
 .team-avatar-glow{
   position:absolute;inset:-4px;border-radius:50%;
@@ -705,30 +767,61 @@ footer{
 }
 .team-info{flex:1;min-width:0;}
 .team-name{
-  font-family:'Syne',sans-serif;font-size:15px;font-weight:700;
+  font-family:'Syne',sans-serif;font-size:20px;font-weight:700;
   color:var(--text);margin-bottom:6px;line-height:1.3;
 }
 .team-role{
   display:inline-block;
   background:var(--cyan-dim);border:1px solid rgba(0,229,255,0.2);
-  border-radius:100px;padding:3px 10px;
-  font-size:11px;font-weight:600;color:var(--cyan);
-  margin-bottom:10px;
+  border-radius:100px;padding:4px 14px;
+  font-size:12px;font-weight:600;color:var(--cyan);
+  margin-bottom:12px;
 }
-.team-desc{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:14px;}
-.team-links{display:flex;gap:8px;flex-wrap:wrap;}
+.team-desc{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:16px;}
+.team-highlights{
+  display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0;
+}
+.team-highlight{
+  display:flex;align-items:flex-start;gap:10px;
+  background:rgba(0,229,255,0.03);
+  border:1px solid rgba(0,229,255,0.08);
+  border-radius:12px;padding:12px 14px;
+  transition:var(--transition);
+}
+.team-highlight:hover{
+  background:rgba(0,229,255,0.06);
+  border-color:rgba(0,229,255,0.18);
+}
+.team-highlight i{font-size:18px;color:var(--cyan);flex-shrink:0;margin-top:2px;}
+.team-highlight div{display:flex;flex-direction:column;gap:3px;}
+.team-highlight strong{font-size:13px;color:var(--text);}
+.team-highlight span{font-size:12px;color:var(--muted);line-height:1.5;}
+
+.team-skills{
+  display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 16px;
+}
+.team-skill{
+  background:rgba(0,229,255,0.07);
+  border:1px solid rgba(0,229,255,0.18);
+  border-radius:100px;padding:5px 14px;
+  font-size:12px;font-weight:600;color:var(--cyan);
+  transition:var(--transition);
+}
+.team-skill:hover{background:rgba(0,229,255,0.15);border-color:rgba(0,229,255,0.4);}
+
+.team-links{display:flex;gap:10px;flex-wrap:wrap;margin-top:4px;}
 .team-link{
-  display:inline-flex;align-items:center;gap:6px;
-  padding:5px 12px;border-radius:100px;
-  font-size:11px;font-weight:600;text-decoration:none;
-  transition:all 0.2s;border:1px solid;
+  display:inline-flex;align-items:center;gap:7px;
+  padding:7px 16px;border-radius:100px;
+  font-size:12px;font-weight:600;text-decoration:none;
+  transition:var(--transition);border:1px solid;
 }
-.team-link svg{width:13px;height:13px;flex-shrink:0;}
+.team-link i{font-size:14px;}
 .team-link.github{
   color:var(--text);border-color:var(--border);
   background:rgba(255,255,255,0.03);
 }
-.team-link.github:hover{background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.2);}
+.team-link.github:hover{background:rgba(255,255,255,0.08);border-color:var(--border-light);}
 .team-link.linkedin{
   color:#0A66C2;border-color:rgba(10,102,194,0.3);
   background:rgba(10,102,194,0.08);
@@ -740,8 +833,7 @@ footer{
 }
 .team-link.email:hover{background:rgba(239,68,68,0.15);}
 
-/* Tech box — replaced */
-/* ── TECH STACK redesign ── */
+/* ── TECH SECTION ── */
 .tech-section-wrap{
   background:var(--bg2);
   border:1px solid var(--border);
@@ -772,11 +864,12 @@ footer{
   padding:24px 28px;
   border-right:1px solid var(--border);
   transition:background 0.2s;
-  cursor:default;
+  cursor:pointer;
 }
 .tech-item:last-child{border-right:none;}
 .tech-item:nth-child(4n){border-right:none;}
-.tech-item:hover{background:rgba(0,229,255,0.025);}
+.tech-item:hover{background:rgba(0,229,255,0.04);}
+.tech-item:hover .tech-item-name{color:var(--cyan);}
 .tech-item-icon{font-size:24px;margin-bottom:10px;}
 .tech-item-name{
   font-family:"Syne",sans-serif;font-size:14px;font-weight:700;
@@ -798,140 +891,19 @@ footer{
 .tech-footer-tag{
   background:rgba(255,255,255,0.03);border:1px solid var(--border);
   border-radius:100px;padding:5px 14px;
-  font-size:12px;color:var(--sub);font-weight:500;
+  font-size:12px;color:var(--muted);font-weight:500;
 }
 .tech-github-btn{
   display:inline-flex;align-items:center;gap:8px;
   background:var(--cyan-dim);border:1px solid rgba(0,229,255,0.25);
   border-radius:12px;padding:10px 20px;
   font-size:13px;font-weight:700;color:var(--cyan);
-  text-decoration:none;transition:all 0.2s;
+  text-decoration:none;transition:var(--transition);
 }
 .tech-github-btn:hover{background:rgba(0,229,255,0.18);transform:translateY(-1px);}
-.tech-github-btn svg{width:16px;height:16px;}
-@media(max-width:900px){
-  .tech-grid{grid-template-columns:repeat(2,1fr);}
-  .tech-item{border-right:1px solid var(--border);}
-  .tech-item:nth-child(2n){border-right:none;}
-  .tech-item:nth-child(4n){border-right:none;}
-  .tech-header{padding:24px;}
-  .tech-footer{padding:20px 24px;}
-}
-@media(max-width:600px){
-  .tech-grid{grid-template-columns:repeat(2,1fr);}
-  .tech-header{flex-direction:column;align-items:flex-start;}
-}
+.tech-github-btn i{font-size:16px;}
 
-/* old tech box below (unused) */
-.tech-box{
-  background:var(--bg2);border:1px solid var(--border);
-  border-radius:24px;padding:40px;
-  display:grid;grid-template-columns:1.2fr 1fr;gap:48px;align-items:start;
-}
-.tech-tags{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px;}
-.tech-tag{
-  background:var(--cyan-dim);border:1px solid rgba(0,229,255,0.2);
-  border-radius:100px;padding:6px 14px;
-  font-size:12px;font-weight:600;color:var(--cyan);
-  transition:all 0.2s;cursor:default;
-}
-.tech-tag:hover{background:rgba(0,229,255,0.2);border-color:rgba(0,229,255,0.4);}
-.github-card{
-  background:rgba(255,255,255,0.02);border:1px solid var(--border);
-  border-radius:18px;padding:24px;min-width:0;
-  display:flex;flex-direction:column;gap:16px;
-  transition:border-color 0.2s;
-}
-.github-card:hover{border-color:rgba(0,229,255,0.2);}
-.github-card-icon{
-  width:48px;height:48px;border-radius:14px;
-  background:rgba(255,255,255,0.06);
-  display:flex;align-items:center;justify-content:center;
-}
-.github-card-icon svg{width:24px;height:24px;color:var(--text);}
-.github-btn-icon{width:16px;height:16px;}
-.github-card-title{
-  font-family:'Syne',sans-serif;font-size:16px;font-weight:700;
-  color:var(--text);margin-bottom:4px;
-}
-.github-card-sub{font-size:12px;color:var(--muted);margin-bottom:10px;}
-.github-card-stats{display:flex;gap:12px;flex-wrap:wrap;}
-.github-card-stats span{font-size:12px;color:var(--muted);}
-
-@media(max-width:900px){
-  .team-grid{grid-template-columns:1fr;}
-  .tech-box{grid-template-columns:1fr;}
-  .github-card{min-width:unset;}
-}
-@media(max-width:600px){
-  .team-card{flex-direction:column;align-items:center;text-align:center;}
-  .team-links{justify-content:center;}
-  .tech-box{padding:24px;}
-}
-
-/* ── SOLO CREATOR CARD ── */
-.solo-card-wrap{
-  display:flex;justify-content:center;margin-bottom:40px;
-}
-.solo-card{
-  max-width:780px;width:100%;
-  background:var(--bg2);
-  border:1px solid rgba(0,229,255,0.18);
-  border-radius:28px;padding:40px;gap:32px;
-  box-shadow:0 0 60px rgba(0,229,255,0.05),0 24px 80px rgba(0,0,0,0.4);
-}
-.solo-avatar{
-  width:100px!important;height:100px!important;
-  border:2px solid rgba(0,229,255,0.35)!important;
-  box-shadow:0 0 28px rgba(0,229,255,0.2);
-}
-.solo-initials{
-  width:100px!important;height:100px!important;
-  font-size:30px!important;
-}
-.fahdil-highlights{
-  display:flex;flex-direction:column;gap:14px;
-  margin:20px 0 20px;
-}
-.fh-item{
-  display:flex;align-items:flex-start;gap:14px;
-  background:rgba(0,229,255,0.03);
-  border:1px solid rgba(0,229,255,0.08);
-  border-radius:14px;padding:14px 16px;
-  transition:border-color 0.2s,background 0.2s;
-}
-.fh-item:hover{
-  background:rgba(0,229,255,0.06);
-  border-color:rgba(0,229,255,0.18);
-}
-.fh-icon{font-size:22px;flex-shrink:0;margin-top:2px;line-height:1;}
-.fh-item div{display:flex;flex-direction:column;gap:4px;}
-.fh-item strong{
-  font-family:'Syne',sans-serif;font-size:13px;font-weight:700;
-  color:var(--text);
-}
-.fh-item span{font-size:13px;color:var(--muted);line-height:1.6;}
-.fahdil-skills{
-  display:flex;flex-wrap:wrap;gap:8px;margin-top:4px;
-}
-.fskill{
-  background:rgba(0,229,255,0.07);
-  border:1px solid rgba(0,229,255,0.18);
-  border-radius:100px;padding:5px 14px;
-  font-size:12px;font-weight:600;color:var(--cyan);
-  transition:all 0.2s;cursor:default;
-}
-.fskill:hover{background:rgba(0,229,255,0.15);border-color:rgba(0,229,255,0.4);}
-@media(max-width:600px){
-  .solo-card{flex-direction:column;align-items:center;text-align:center;padding:28px 20px;}
-  .fahdil-highlights{text-align:left;}
-  .team-links{justify-content:center;}
-}
-
-
-/* ════════════════════════════════════════
-   SCREEN CAROUSEL
-════════════════════════════════════════ */
+/* ── SCREEN CAROUSEL ── */
 .screens-section{padding:80px 0;overflow:hidden;position:relative;z-index:1;}
 .screens-track-wrap{
   overflow:hidden;
@@ -963,29 +935,23 @@ footer{
 .sc-card-sub{font-size:8px;color:var(--muted);}
 .sc-bar{height:4px;border-radius:2px;background:rgba(255,255,255,0.05);margin-top:6px;overflow:hidden;}
 .sc-bar-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--cyan),var(--purple));}
-.sc-badge{display:inline-block;background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.25);border-radius:100px;padding:2px 8px;font-size:8px;color:#10B981;font-weight:600;margin-top:5px;}
+.sc-badge{display:inline-block;background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.25);border-radius:100px;padding:2px 8px;font-size:8px;color:var(--success);font-weight:600;margin-top:5px;}
 .sc-ai-bubble{background:rgba(0,229,255,0.06);border:1px solid rgba(0,229,255,0.1);border-radius:10px 10px 10px 3px;padding:8px;margin-bottom:6px;}
 .sc-ai-text{font-size:8px;color:var(--muted);line-height:1.5;}
 .sc-avatar-row{display:flex;gap:5px;margin-bottom:7px;}
 .sc-avatar{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--cyan),var(--purple));display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:#020812;}
-.sc-avatar2{background:linear-gradient(135deg,var(--purple),#EC4899);}
-.sc-avatar3{background:linear-gradient(135deg,#10B981,#059669);}
-.sc-menu-item{display:flex;align-items:center;gap:6px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.04);}
-.sc-menu-icon{width:16px;height:16px;border-radius:5px;background:rgba(0,229,255,0.1);flex-shrink:0;}
-.sc-menu-text{font-size:8px;color:var(--sub);}
-.sc-label{position:absolute;bottom:38px;left:0;right:0;text-align:center;font-size:8px;color:var(--muted);font-weight:700;letter-spacing:0.06em;text-transform:uppercase;}
 .sc-bnav{display:flex;justify-content:space-around;position:absolute;bottom:0;left:0;right:0;padding:8px 6px 14px;background:linear-gradient(to top,#0C1628 70%,transparent);border-top:1px solid rgba(255,255,255,0.04);}
 .sc-bni{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:7px;color:var(--muted);}
 .sc-bni.a{color:var(--cyan);}
-.sc-bni-dot{font-size:11px;}
+.sc-bni i{font-size:12px;}
+.sc-label{position:absolute;bottom:38px;left:0;right:0;text-align:center;font-size:8px;color:var(--muted);font-weight:700;letter-spacing:0.06em;text-transform:uppercase;}
 
-/* ════════════════════════════════════════
-   TECH MODAL
-════════════════════════════════════════ */
+/* ── TECH MODAL ── */
 .tech-modal-overlay{
   position:fixed;inset:0;z-index:2000;
   background:rgba(0,0,0,0.88);
-  -webkit-backdrop-filter:blur(24px);backdrop-filter:blur(24px);
+  backdrop-filter:blur(24px);
+  -webkit-backdrop-filter:blur(24px);
   display:flex;align-items:center;justify-content:center;padding:20px;
   opacity:0;pointer-events:none;
   transition:opacity 0.3s;
@@ -993,7 +959,7 @@ footer{
 .tech-modal-overlay.open{opacity:1;pointer-events:all;}
 .tech-modal-box{
   background:var(--bg2);
-  border:1px solid var(--border2);
+  border:1px solid var(--border);
   border-radius:28px;
   max-width:560px;width:100%;
   overflow:hidden;
@@ -1003,7 +969,6 @@ footer{
   box-shadow:0 40px 100px rgba(0,0,0,0.6),0 0 0 1px rgba(0,229,255,0.06);
 }
 .tech-modal-overlay.open .tech-modal-box{transform:translateY(0) scale(1);}
-
 .tech-modal-header{
   padding:32px 32px 24px;
   display:flex;align-items:flex-start;gap:18px;
@@ -1040,10 +1005,9 @@ footer{
   background:rgba(255,255,255,0.05);border:1px solid var(--border);
   color:var(--muted);cursor:pointer;font-size:18px;line-height:1;
   display:flex;align-items:center;justify-content:center;
-  transition:all 0.2s;
+  transition:var(--transition);
 }
 .tech-modal-close:hover{background:rgba(255,255,255,0.1);color:var(--text);}
-
 .tech-modal-body{padding:28px 32px;}
 .tech-modal-section-label{
   font-size:10px;font-weight:700;letter-spacing:0.12em;
@@ -1073,33 +1037,286 @@ footer{
   font-size:11px;font-weight:500;color:var(--sub);
 }
 
-/* Clickable tech item */
-.tech-item{cursor:pointer;position:relative;}
-.tech-item:hover{background:rgba(0,229,255,0.04);}
-.tech-item:hover .tech-item-name{color:var(--cyan);}
-.tech-item:active{background:rgba(0,229,255,0.08);}
-.tech-item::after{
-  content:"→ Click for details";
-  display:block;font-size:10px;color:var(--cyan);
-  opacity:0;margin-top:8px;
-  transition:opacity 0.25s;font-weight:600;letter-spacing:0.04em;
+/* ════════════════════════════════════════
+   FLOATING CHAT BUBBLE
+════════════════════════════════════════ */
+.chat-bubble{
+  position:fixed;bottom:30px;right:30px;z-index:999;
+  display:flex;flex-direction:column;align-items:flex-end;gap:12px;
 }
-.tech-item:hover::after{opacity:0.6;}
+.chat-bubble-btn{
+  width:64px;height:64px;
+  border-radius:50%;
+  background:linear-gradient(135deg,var(--cyan),var(--purple));
+  border:none;
+  color:white;
+  font-size:28px;
+  cursor:pointer;
+  box-shadow:0 8px 32px rgba(0,229,255,0.4),0 0 0 4px rgba(0,229,255,0.1);
+  transition:var(--transition);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+}
+.chat-bubble-btn:hover{
+  transform:scale(1.1) rotate(-10deg);
+  box-shadow:0 12px 48px rgba(0,229,255,0.5),0 0 0 6px rgba(0,229,255,0.15);
+}
+.chat-bubble-btn .pulse-ring{
+  position:absolute;inset:-8px;
+  border-radius:50%;
+  border:2px solid var(--cyan);
+  animation:chatPulse 2s ease-in-out infinite;
+}
+@keyframes chatPulse{
+  0%{transform:scale(1);opacity:1;}
+  100%{transform:scale(1.5);opacity:0;}
+}
+.chat-bubble-btn .badge-dot{
+  position:absolute;top:4px;right:4px;
+  width:14px;height:14px;
+  border-radius:50%;
+  background:var(--danger);
+  border:2px solid var(--bg);
+  animation:pulse 1.5s ease-in-out infinite;
+}
 
+.chat-window{
+  width:340px;
+  background:var(--bg2);
+  border:1px solid var(--border);
+  border-radius:24px;
+  overflow:hidden;
+  box-shadow:0 24px 80px rgba(0,0,0,0.6);
+  transform:translateY(20px) scale(0.95);
+  opacity:0;
+  pointer-events:none;
+  transition:all 0.35s cubic-bezier(.25,.46,.45,.94);
+  max-height:460px;
+  display:flex;
+  flex-direction:column;
+}
+.chat-window.open{
+  transform:translateY(0) scale(1);
+  opacity:1;
+  pointer-events:all;
+}
+.chat-header{
+  padding:16px 20px;
+  background:linear-gradient(135deg,rgba(0,229,255,0.1),rgba(155,93,229,0.05));
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:12px;
+}
+.chat-header-avatar{
+  width:36px;height:36px;
+  border-radius:50%;
+  background:linear-gradient(135deg,var(--cyan),var(--purple));
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:700;color:#020812;
+}
+.chat-header-info{flex:1;}
+.chat-header-name{
+  font-family:'Syne',sans-serif;font-size:14px;font-weight:700;
+  color:var(--text);
+}
+.chat-header-status{
+  font-size:11px;color:var(--success);
+  display:flex;align-items:center;gap:4px;
+}
+.chat-header-status i{font-size:8px;}
+.chat-header-close{
+  background:none;border:none;
+  color:var(--muted);font-size:18px;
+  cursor:pointer;padding:4px 8px;
+  transition:color 0.2s;
+}
+.chat-header-close:hover{color:var(--text);}
+.chat-messages{
+  padding:16px 20px;
+  flex:1;
+  overflow-y:auto;
+  display:flex;flex-direction:column;
+  gap:10px;
+  max-height:280px;
+  min-height:200px;
+}
+.chat-msg{
+  max-width:85%;
+  padding:10px 14px;
+  border-radius:16px;
+  font-size:13px;
+  line-height:1.5;
+  animation:msgSlide 0.3s ease;
+}
+@keyframes msgSlide{
+  from{opacity:0;transform:translateY(8px);}
+  to{opacity:1;transform:translateY(0);}
+}
+.chat-msg.bot{
+  align-self:flex-start;
+  background:rgba(0,229,255,0.08);
+  border:1px solid rgba(0,229,255,0.12);
+  border-radius:16px 16px 16px 4px;
+  color:var(--text-secondary);
+}
+.chat-msg.user{
+  align-self:flex-end;
+  background:linear-gradient(135deg,var(--cyan),var(--purple));
+  color:#020812;
+  border-radius:16px 16px 4px 16px;
+}
+.chat-msg-time{
+  font-size:9px;color:var(--muted);margin-top:4px;display:block;
+}
+.chat-input-wrap{
+  padding:12px 16px 16px;
+  border-top:1px solid var(--border);
+  display:flex;gap:10px;
+  align-items:center;
+}
+.chat-input{
+  flex:1;
+  background:rgba(255,255,255,0.05);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:10px 14px;
+  font-size:13px;
+  color:var(--text);
+  outline:none;
+  transition:border-color 0.2s;
+  font-family:'DM Sans',sans-serif;
+}
+.chat-input:focus{border-color:var(--cyan);}
+.chat-input::placeholder{color:var(--muted);}
+.chat-send-btn{
+  width:40px;height:40px;
+  border-radius:12px;
+  background:linear-gradient(135deg,var(--cyan),var(--purple));
+  border:none;
+  color:#020812;
+  font-size:16px;
+  cursor:pointer;
+  transition:var(--transition);
+  display:flex;align-items:center;justify-content:center;
+}
+.chat-send-btn:hover{transform:scale(1.05);}
+.chat-send-btn:disabled{opacity:0.4;cursor:not-allowed;transform:none;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .hero{grid-template-columns:1fr;text-align:center;padding:60px 0 40px;}
+  .hero-right{display:none;}
+  .hero-desc{margin:0 auto 40px;}
+  .hero-actions{justify-content:center;}
+  .hero-meta{justify-content:center;}
+  .features-grid{grid-template-columns:1fr;}
+  .steps{grid-template-columns:repeat(2,1fr);gap:40px;}
+  .steps::before{display:none;}
+  .stats-bar{grid-template-columns:repeat(2,1fr);gap:28px;}
+  .download-section{grid-template-columns:1fr;text-align:center;}
+  .dl-features{justify-content:center;}
+  .dl-actions{width:100%;max-width:320px;margin:0 auto;}
+  footer{flex-direction:column;gap:20px;text-align:center;}
+  .nav-links{display:none;}
+  .wrap{padding:0 20px;}
+  .team-highlights{grid-template-columns:1fr;}
+  .tech-grid{grid-template-columns:repeat(2,1fr);}
+  .tech-item{border-right:1px solid var(--border);}
+  .tech-item:nth-child(2n){border-right:none;}
+  .back-button-wrap{top:80px;left:12px;}
+  .back-btn{padding:6px 14px 6px 10px;font-size:11px;}
+  .back-btn i{font-size:13px;}
+  .back-btn span{display:none;}
+  .chat-window{width:300px;right:10px;bottom:80px;}
+  .chat-bubble-btn{width:56px;height:56px;font-size:24px;}
+}
+@media(max-width:600px){
+  .features-grid{grid-template-columns:1fr;}
+  .feat{padding:28px 24px;}
+  .stats-bar{padding:32px 24px;}
+  .download-section{padding:48px 28px;}
+  h1{font-size:36px;}
+  .tech-grid{grid-template-columns:1fr 1fr;}
+  .tech-header{padding:24px;}
+  .tech-footer{padding:20px 24px;}
+  .tech-modal-box{max-width:100%;margin:10px;border-radius:20px;}
+  .tech-modal-header{padding:20px;flex-direction:column;align-items:center;text-align:center;}
+  .tech-modal-body{padding:20px;}
+  .chat-window{width:calc(100vw - 40px);right:20px;bottom:80px;max-height:400px;}
+  .team-card{flex-direction:column;align-items:center;text-align:center;}
+  .team-highlights{text-align:left;}
+  .team-links{justify-content:center;}
+  .back-button-wrap{top:70px;left:8px;}
+}
 </style>
+</head>
 <body>
 
+<!-- ════════════════════════════════════════
+     SNOW / PARTICLE EFFECT (Bottom to Top)
+════════════════════════════════════════ -->
+<div class="snow-container" id="snowContainer"></div>
+
+<!-- ── Cursors ── -->
 <div id="cursor"></div>
 <div id="cursor-ring"></div>
+
+<!-- ── Background ── -->
 <div class="mesh"></div>
 <div class="grid-lines"></div>
 <div class="orb orb1"></div>
 <div class="orb orb2"></div>
 <div class="orb orb3"></div>
 
+<!-- ════════════════════════════════════════
+     BACK BUTTON
+════════════════════════════════════════ -->
+<div class="back-button-wrap">
+  <button class="back-btn" onclick="window.history.back()">
+    <i class="fas fa-arrow-left"></i>
+    <span>Back</span>
+  </button>
+</div>
+
+<!-- ════════════════════════════════════════
+     FLOATING CHAT BUBBLE
+════════════════════════════════════════ -->
+<div class="chat-bubble">
+  <div class="chat-window" id="chatWindow">
+    <div class="chat-header">
+      <div class="chat-header-avatar">✨</div>
+      <div class="chat-header-info">
+        <div class="chat-header-name">Career Navigator AI</div>
+        <div class="chat-header-status"><i class="fas fa-circle"></i> Online — Ready to help</div>
+      </div>
+      <button class="chat-header-close" onclick="toggleChat()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="chat-messages" id="chatMessages">
+      <div class="chat-msg bot">
+        👋 Welcome to Career Navigator! I'm your AI career assistant.
+        <span class="chat-msg-time">Just now</span>
+      </div>
+      <div class="chat-msg bot">
+        Ask me about resume tips, job matching, skill development, or any career questions!
+        <span class="chat-msg-time">Just now</span>
+      </div>
+    </div>
+    <div class="chat-input-wrap">
+      <input class="chat-input" id="chatInput" placeholder="Ask me anything..." onkeypress="if(event.key==='Enter') sendChat()">
+      <button class="chat-send-btn" id="chatSendBtn" onclick="sendChat()">
+        <i class="fas fa-paper-plane"></i>
+      </button>
+    </div>
+  </div>
+  <button class="chat-bubble-btn" onclick="toggleChat()">
+    <span class="pulse-ring"></span>
+    <span class="badge-dot"></span>
+    <i class="fas fa-comment-dots"></i>
+  </button>
+</div>
+
 <div class="wrap">
 
-<!-- NAV -->
+<!-- ── NAV ── -->
 <nav>
   <a class="nav-logo" href="#">
     <div class="nav-logo-mark">
@@ -1113,17 +1330,14 @@ footer{
     <a href="#about">About</a>
     <a href="#download">Download</a>
   </div>
-  <div class="nav-badge">Beta Live</div>
+  <div class="nav-badge"><i class="fas fa-bolt"></i> Beta Live</div>
 </nav>
 
-<!-- HERO -->
+<!-- ── HERO ── -->
 <section class="hero">
   <div class="hero-left reveal">
     <div class="hero-eyebrow">
-      <img src="logo.png" alt="Career Navigator"
-           style="width:20px;height:20px;border-radius:6px;object-fit:cover;flex-shrink:0;"
-           onerror="this.style.display='none'">
-      AI-Powered Career Platform
+      <i class="fas fa-robot"></i> AI-Powered Career Platform
     </div>
     <h1>
       Shape Your<br>
@@ -1136,11 +1350,11 @@ footer{
     </p>
     <div class="hero-actions">
       <button class="btn btn-primary" id="mainDownloadBtn">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 15.34a.75.75 0 01.048 1.06l-4.5 5a.75.75 0 01-1.112 0l-4.5-5a.75.75 0 111.082-1.04l3.21 3.565V3.75a.75.75 0 011.5 0v15.175l3.212-3.566a.75.75 0 011.06-.019z"/></svg>
+        <i class="fas fa-download"></i>
         Download APK — Free
       </button>
       <a href="#features" class="btn btn-ghost">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+        <i class="fas fa-clock"></i>
         See Features
       </a>
     </div>
@@ -1182,7 +1396,7 @@ footer{
             <div class="phone-card-sub">Accenture · Yaoundé · Remote</div>
             <div class="phone-bar"><div class="phone-bar-fill" style="width:78%"></div></div>
             <div class="phone-pill">
-              <svg width="8" height="8" viewBox="0 0 8 8" fill="currentColor"><circle cx="4" cy="4" r="4"/></svg>
+              <i class="fas fa-circle" style="font-size:6px;"></i>
               78% Match
             </div>
           </div>
@@ -1193,19 +1407,19 @@ footer{
         </div>
         <div class="phone-bottom-nav">
           <div class="phone-nav-icon active">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+            <i class="fas fa-home"></i>
             Home
           </div>
           <div class="phone-nav-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>
+            <i class="fas fa-briefcase"></i>
             Jobs
           </div>
           <div class="phone-nav-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+            <i class="fas fa-comment-dots"></i>
             Chat
           </div>
           <div class="phone-nav-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a6 6 0 0112 0v2"/></svg>
+            <i class="fas fa-user"></i>
             Profile
           </div>
         </div>
@@ -1215,16 +1429,16 @@ footer{
 </section>
 </div><!-- /wrap -->
 
-<!-- MARQUEE -->
+<!-- ── MARQUEE ── -->
 <div class="marquee-wrap">
   <div class="marquee-track" id="marqueeTrack"></div>
 </div>
 
-<!-- SCREEN CAROUSEL -->
+<!-- ── SCREEN CAROUSEL ── -->
 <section class="screens-section" id="screens">
   <div class="wrap">
     <div class="section-head reveal">
-      <div class="section-eyebrow">App Screenshots</div>
+      <div class="section-eyebrow"><i class="fas fa-mobile-screen"></i> App Screenshots</div>
       <h2 class="section-title">Every screen, crafted for you</h2>
       <p class="section-sub">Scroll through the Career Navigator experience — clean, fast, and built for Africa.</p>
     </div>
@@ -1234,90 +1448,77 @@ footer{
   </div>
 </section>
 
-
 <div class="wrap">
 
-<!-- STATS -->
+<!-- ── STATS ── -->
 <div class="stats-bar reveal" style="margin-top:80px">
   <div class="stat">
     <div class="stat-n" data-target="10000">0</div>
-    <div class="stat-l">Downloads</div>
+    <div class="stat-l"><i class="fas fa-download" style="margin-right:6px;"></i>Downloads</div>
     <div class="stat-div"></div>
   </div>
   <div class="stat">
     <div class="stat-n">98%</div>
-    <div class="stat-l">Satisfaction Rate</div>
+    <div class="stat-l"><i class="fas fa-smile" style="margin-right:6px;"></i>Satisfaction</div>
     <div class="stat-div"></div>
   </div>
   <div class="stat">
     <div class="stat-n" data-target="500">0</div>
-    <div class="stat-l">Active Mentors</div>
+    <div class="stat-l"><i class="fas fa-users" style="margin-right:6px;"></i>Mentors</div>
     <div class="stat-div"></div>
   </div>
   <div class="stat">
     <div class="stat-n">4.9★</div>
-    <div class="stat-l">App Rating</div>
+    <div class="stat-l"><i class="fas fa-star" style="margin-right:6px;color:var(--warning);"></i>Rating</div>
   </div>
 </div>
 
-<!-- FEATURES -->
+<!-- ── FEATURES ── -->
 <section id="features" class="section">
   <div class="section-head reveal">
-    <div class="section-eyebrow">Features</div>
+    <div class="section-eyebrow"><i class="fas fa-cubes"></i> Features</div>
     <h2 class="section-title">Everything you need.<br>Nothing you don't.</h2>
     <p class="section-sub">Built for ambitious professionals at every stage of their career journey.</p>
   </div>
   <div class="features-grid reveal">
     <div class="feat" data-feat>
       <div class="feat-num">01</div>
-      <div class="feat-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9.5 2A2.5 2.5 0 007 4.5v15A2.5 2.5 0 009.5 22h5a2.5 2.5 0 002.5-2.5v-15A2.5 2.5 0 0014.5 2h-5z"/><path d="M9 7h6M9 11h6M9 15h4"/></svg>
-      </div>
+      <div class="feat-icon"><i class="fas fa-robot"></i></div>
       <h3>AI Career Coach</h3>
       <p>Get personalized career advice, resume feedback, and interview prep powered by Gemini AI — available 24/7.</p>
       <div class="feat-tag">→ Powered by Gemini</div>
     </div>
     <div class="feat" data-feat>
       <div class="feat-num">02</div>
-      <div class="feat-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-      </div>
+      <div class="feat-icon"><i class="fas fa-bullseye"></i></div>
       <h3>Smart Job Matching</h3>
       <p>Discover opportunities perfectly matched to your skills and preferences with our intelligent job-matching engine.</p>
       <div class="feat-tag">→ Real-time listings</div>
     </div>
     <div class="feat" data-feat>
       <div class="feat-num">03</div>
-      <div class="feat-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
-      </div>
+      <div class="feat-icon"><i class="fas fa-handshake"></i></div>
       <h3>Mentor Network</h3>
       <p>Connect 1-on-1 with 500+ industry experts for real guidance, real talk, and real career acceleration.</p>
       <div class="feat-tag">→ Instant messaging</div>
     </div>
     <div class="feat" data-feat>
       <div class="feat-num">04</div>
-      <div class="feat-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-      </div>
+      <div class="feat-icon"><i class="fas fa-chart-line"></i></div>
       <h3>Skill Assessment</h3>
       <p>Gamified quizzes track your progress with XP, streaks, and targeted learning paths to level up fast.</p>
       <div class="feat-tag">→ Track & level up</div>
     </div>
     <div class="feat" data-feat>
       <div class="feat-num">05</div>
-      <div class="feat-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-      </div>
+      <div class="feat-icon"><i class="fas fa-money-bill-wave"></i></div>
       <h3>Salary Negotiation</h3>
       <p>AI-powered salary insights and negotiation coaching so you always know your worth and ask for it confidently.</p>
       <div class="feat-tag">→ Know your worth</div>
     </div>
     <div class="feat" data-feat>
       <div class="feat-num">06</div>
-      <div class="feat-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-      </div>
+      <div class="feat-icon"><i class="fas fa-server"></i></div>
       <h3>Admin Dashboard</h3>
       <p>Full platform management with analytics, user oversight, and content moderation for platform operators.</p>
       <div class="feat-tag">→ Full control</div>
@@ -1325,84 +1526,82 @@ footer{
   </div>
 </section>
 
-<!-- HOW IT WORKS -->
+<!-- ── HOW IT WORKS ── -->
 <section id="how" class="section" style="padding-top:0">
   <div class="section-head reveal">
-    <div class="section-eyebrow">Process</div>
+    <div class="section-eyebrow"><i class="fas fa-route"></i> Process</div>
     <h2 class="section-title">Up and running in minutes</h2>
     <p class="section-sub">Four simple steps to transform your career trajectory.</p>
   </div>
   <div class="steps reveal">
     <div class="step">
       <div class="step-num">01</div>
-      <h3>Download</h3>
+      <h3><i class="fas fa-download" style="color:var(--cyan);margin-right:8px;"></i>Download</h3>
       <p>Download the APK directly — no Play Store needed, no Google account required. One tap and you're set.</p>
     </div>
     <div class="step">
       <div class="step-num">02</div>
-      <h3>Create Profile</h3>
+      <h3><i class="fas fa-user-plus" style="color:var(--purple);margin-right:8px;"></i>Create Profile</h3>
       <p>Sign up as a Job Seeker or Mentor and complete your profile to unlock personalized recommendations.</p>
     </div>
     <div class="step">
       <div class="step-num">03</div>
-      <h3>Connect</h3>
+      <h3><i class="fas fa-plug" style="color:var(--success);margin-right:8px;"></i>Connect</h3>
       <p>Browse mentors, apply to jobs, and start real-time conversations with professionals in your field.</p>
     </div>
     <div class="step">
       <div class="step-num">04</div>
-      <h3>Grow</h3>
+      <h3><i class="fas fa-rocket" style="color:var(--warning);margin-right:8px;"></i>Grow</h3>
       <p>Use AI tools to level up your skills, negotiate better salaries, and map your ideal career path.</p>
     </div>
   </div>
 </section>
 
-
-<!-- ABOUT / TEAM -->
+<!-- ── ABOUT / TEAM ── -->
 <section id="about" class="section" style="padding-top:0">
   <div class="section-head reveal">
-    <div class="section-eyebrow">The Builder</div>
+    <div class="section-eyebrow"><i class="fas fa-user-astronaut"></i> The Builder</div>
     <h2 class="section-title">Meet the creator</h2>
     <p class="section-sub">The mind and hands behind Career Navigator — from architecture to deployment.</p>
   </div>
 
-  <!-- Solo Fahdil card -->
-  <div class="solo-card-wrap reveal">
-    <div class="team-card solo-card">
+  <!-- Team Card -->
+  <div class="reveal">
+    <div class="team-card">
       <div class="team-avatar-wrap">
-        <img class="team-avatar solo-avatar" src="https://avatars.githubusercontent.com/TUHEU"
-          onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+        <img class="team-avatar" src="https://avatars.githubusercontent.com/TUHEU"
+          onerror="this.src='https://ui-avatars.com/api/?name=Tuheu+Tchoubi&background=0E1A2B&color=00E5FF&size=120&bold=true'"
           alt="Fahdil">
-        <div class="team-initials solo-initials" style="display:none">TF</div>
         <div class="team-avatar-glow"></div>
       </div>
       <div class="team-info">
-        <div class="team-name" style="font-size:20px">Tuheu Tchoubi Pempeme Moussa Fahdil</div>
-        <div class="team-role">Full-Stack Engineer &middot; Backend Architect &middot; Mobile Developer</div>
+        <div class="team-name">Tuheu Tchoubi Pempeme Moussa Fahdil</div>
+        <div class="team-role">🚀 Full-Stack Engineer · Backend Architect · Mobile Developer</div>
 
-        <div class="fahdil-highlights">
-          <div class="fh-item">
-            <span class="fh-icon">🏗️</span>
+        <div class="team-highlights">
+          <div class="team-highlight">
+            <i class="fas fa-cubes"></i>
             <div>
               <strong>Architect &amp; Backend Lead</strong>
-              <span>Designed the entire system from scratch — RESTful Flask API, 19-table MySQL schema, JWT auth with refresh tokens, OTP email verification, and role-based access control.</span>
+              <span>Designed the entire system from scratch — RESTful Flask API, 19-table MySQL schema, JWT auth with refresh tokens, OTP verification, and role-based access control.</span>
             </div>
           </div>
-          <div class="fh-item">
-            <span class="fh-icon">📱</span>
+          <div class="team-highlight">
+            <i class="fas fa-mobile-alt"></i>
             <div>
               <strong>Flutter Mobile Developer</strong>
               <span>Built the cross-platform Flutter app covering job listings, AI advisor, real-time chat, mentor network, profile management, and the admin dashboard.</span>
             </div>
           </div>
-          <div class="fh-item">
-            <span class="fh-icon">🤖</span>
+          <div class="team-highlight">
+            <i class="fas fa-brain"></i>
             <div>
               <strong>AI Integration</strong>
               <span>Integrated Google Gemini AI for the career coaching module, including conversation history, session management, and context-aware advice generation.</span>
             </div>
           </div>
-          <div class="fh-item">
-            <span class="fh-icon">☁️</span>
+          <div class="team-highlight">
+            <i class="fas fa-cloud"></i>
             <div>
               <strong>Cloud &amp; Infrastructure</strong>
               <span>Deployed and managed the production backend on a Contabo VPS using PM2 with Cloudinary for media storage and Brevo for transactional emails.</span>
@@ -1410,36 +1609,36 @@ footer{
           </div>
         </div>
 
-        <div class="fahdil-skills">
-          <span class="fskill">Flutter</span><span class="fskill">Python</span>
-          <span class="fskill">Flask</span><span class="fskill">MySQL</span>
-          <span class="fskill">JWT</span><span class="fskill">Gemini AI</span>
-          <span class="fskill">Cloudinary</span><span class="fskill">PM2</span>
-          <span class="fskill">REST APIs</span><span class="fskill">VPS</span>
+        <div class="team-skills">
+          <span class="team-skill"><i class="fab fa-flutter"></i> Flutter</span>
+          <span class="team-skill"><i class="fab fa-python"></i> Python</span>
+          <span class="team-skill"><i class="fas fa-flask"></i> Flask</span>
+          <span class="team-skill"><i class="fas fa-database"></i> MySQL</span>
+          <span class="team-skill"><i class="fas fa-lock"></i> JWT</span>
+          <span class="team-skill"><i class="fas fa-robot"></i> Gemini AI</span>
+          <span class="team-skill"><i class="fas fa-cloud-upload-alt"></i> Cloudinary</span>
+          <span class="team-skill"><i class="fas fa-server"></i> PM2</span>
+          <span class="team-skill"><i class="fas fa-code"></i> REST APIs</span>
+          <span class="team-skill"><i class="fas fa-server"></i> VPS</span>
         </div>
 
-        <div class="team-links" style="margin-top:20px">
-          <a href="https://github.com/TUHEU" target="_blank" rel="noopener noreferrer" class="team-link github">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-            GitHub
+        <div class="team-links">
+          <a href="https://github.com/TUHEU" target="_blank" rel="noopener" class="team-link github">
+            <i class="fab fa-github"></i> GitHub
           </a>
-          <a href="https://www.linkedin.com/in/nadal-junior-63b5933a3/" target="_blank" rel="noopener noreferrer" class="team-link linkedin">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-            LinkedIn
+          <a href="https://www.linkedin.com/in/nadal-junior-63b5933a3/" target="_blank" rel="noopener" class="team-link linkedin">
+            <i class="fab fa-linkedin-in"></i> LinkedIn
           </a>
           <a href="mailto:tuheu.moussa@ictuniversity.edu.cm" class="team-link email">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-            Email
+            <i class="fas fa-envelope"></i> Email
           </a>
         </div>
       </div>
     </div>
-  </div><!-- /solo-card-wrap -->
+  </div>
 
-  <!-- Tech stack + GitHub link -->
-  <div class="tech-section-wrap reveal">
-
-    <!-- Header -->
+  <!-- Tech Stack -->
+  <div class="tech-section-wrap reveal" style="margin-top:40px;">
     <div class="tech-header">
       <div class="tech-header-icon">⚙️</div>
       <div class="tech-header-text">
@@ -1449,60 +1648,56 @@ footer{
            Cloudinary media CDN, and Google Gemini 2.0 Flash AI.</p>
       </div>
     </div>
-
-    <!-- Tech grid -->
     <div class="tech-grid">
-      <div class="tech-item" onclick="openTechModal('flutter')" style="cursor:pointer">
-        <div class="tech-item-icon">📱</div>
+      <div class="tech-item" onclick="openTechModal('flutter')">
+        <div class="tech-item-icon"><i class="fab fa-flutter"></i></div>
         <div class="tech-item-name">Flutter</div>
-        <div class="tech-item-desc">Cross-platform mobile app for Android & iOS</div>
+        <div class="tech-item-desc">Cross-platform mobile app for Android &amp; iOS</div>
         <div class="tech-item-badge">Frontend</div>
       </div>
-      <div class="tech-item" onclick="openTechModal('python')" style="cursor:pointer">
-        <div class="tech-item-icon">🐍</div>
+      <div class="tech-item" onclick="openTechModal('python')">
+        <div class="tech-item-icon"><i class="fab fa-python"></i></div>
         <div class="tech-item-name">Python / Flask</div>
-        <div class="tech-item-desc">REST API with Blueprints, JWT & middleware</div>
+        <div class="tech-item-desc">REST API with Blueprints, JWT &amp; middleware</div>
         <div class="tech-item-badge">Backend</div>
       </div>
-      <div class="tech-item" onclick="openTechModal('mysql')" style="cursor:pointer">
-        <div class="tech-item-icon">🗄️</div>
+      <div class="tech-item" onclick="openTechModal('mysql')">
+        <div class="tech-item-icon"><i class="fas fa-database"></i></div>
         <div class="tech-item-name">MySQL</div>
         <div class="tech-item-desc">28 tables, 9 triggers, 8 stored procedures</div>
         <div class="tech-item-badge">Database</div>
       </div>
-      <div class="tech-item" onclick="openTechModal('gemini')" style="cursor:pointer">
-        <div class="tech-item-icon">🤖</div>
+      <div class="tech-item" onclick="openTechModal('gemini')">
+        <div class="tech-item-icon"><i class="fas fa-robot"></i></div>
         <div class="tech-item-name">Gemini AI</div>
         <div class="tech-item-desc">Google Gemini 2.0 Flash — 7 career coaching tools</div>
         <div class="tech-item-badge">AI Engine</div>
       </div>
-      <div class="tech-item" onclick="openTechModal('cloudinary')" style="cursor:pointer">
-        <div class="tech-item-icon">☁️</div>
+      <div class="tech-item" onclick="openTechModal('cloudinary')">
+        <div class="tech-item-icon"><i class="fas fa-cloud-upload-alt"></i></div>
         <div class="tech-item-name">Cloudinary</div>
-        <div class="tech-item-desc">Media storage, transformation & CDN delivery</div>
+        <div class="tech-item-desc">Media storage, transformation &amp; CDN delivery</div>
         <div class="tech-item-badge">Storage</div>
       </div>
-      <div class="tech-item" onclick="openTechModal('socketio')" style="cursor:pointer">
-        <div class="tech-item-icon">⚡</div>
+      <div class="tech-item" onclick="openTechModal('socketio')">
+        <div class="tech-item-icon"><i class="fas fa-bolt"></i></div>
         <div class="tech-item-name">Socket.IO</div>
-        <div class="tech-item-desc">Real-time bidirectional messaging & chat</div>
+        <div class="tech-item-desc">Real-time bidirectional messaging &amp; chat</div>
         <div class="tech-item-badge">Real-time</div>
       </div>
-      <div class="tech-item" onclick="openTechModal('brevo')" style="cursor:pointer">
-        <div class="tech-item-icon">📧</div>
+      <div class="tech-item" onclick="openTechModal('brevo')">
+        <div class="tech-item-icon"><i class="fas fa-envelope"></i></div>
         <div class="tech-item-name">Brevo</div>
-        <div class="tech-item-desc">Transactional email, OTP delivery & automation</div>
+        <div class="tech-item-desc">Transactional email, OTP delivery &amp; automation</div>
         <div class="tech-item-badge">Email</div>
       </div>
-      <div class="tech-item" onclick="openTechModal('jwt')" style="cursor:pointer">
-        <div class="tech-item-icon">🔒</div>
+      <div class="tech-item" onclick="openTechModal('jwt')">
+        <div class="tech-item-icon"><i class="fas fa-lock"></i></div>
         <div class="tech-item-name">JWT + Bcrypt</div>
-        <div class="tech-item-desc">Secure auth with access & refresh token rotation</div>
+        <div class="tech-item-desc">Secure auth with access &amp; refresh token rotation</div>
         <div class="tech-item-badge">Security</div>
       </div>
     </div>
-
-    <!-- Footer row -->
     <div class="tech-footer">
       <div class="tech-footer-left">
         <span class="tech-footer-tag">🚀 PM2 Process Manager</span>
@@ -1511,55 +1706,40 @@ footer{
         <span class="tech-footer-tag">🌍 Made in Cameroon</span>
       </div>
       <a href="https://github.com/TUHEU" target="_blank" rel="noopener" class="tech-github-btn">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-        View on GitHub
+        <i class="fab fa-github"></i> View on GitHub
       </a>
     </div>
-
   </div>
-
-  </div>
-
 </section>
 
-<!-- DOWNLOAD -->
+<!-- ── DOWNLOAD ── -->
 <section id="download" class="section" style="padding-top:0">
   <div class="download-section reveal">
     <div class="dl-text">
-      <div class="section-eyebrow" style="text-align:left;display:inline-block;margin-bottom:20px">Download Now</div>
+      <div class="section-eyebrow" style="text-align:left;display:inline-block;margin-bottom:20px;">
+        <i class="fas fa-download"></i> Download Now
+      </div>
       <h2>Your next chapter<br>starts with one tap.</h2>
       <p>Career Navigator is free to download and use. Get the Android APK now and start your journey today.</p>
       <div class="dl-features">
-        <div class="dl-feat">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-          100% Free For the moment
-        </div>
-        <div class="dl-feat">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-          No ads
-        </div>
-        <div class="dl-feat">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-          AI Powered
-        </div>
-        <div class="dl-feat">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-          Open Source
-        </div>
+        <div class="dl-feat"><i class="fas fa-check-circle"></i> 100% Free</div>
+        <div class="dl-feat"><i class="fas fa-check-circle"></i> No ads</div>
+        <div class="dl-feat"><i class="fas fa-check-circle"></i> AI Powered</div>
+        <div class="dl-feat"><i class="fas fa-check-circle"></i> Open Source</div>
       </div>
     </div>
     <div class="dl-actions">
       <button class="dl-main" id="ctaDownloadBtn">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 15.34a.75.75 0 01.048 1.06l-4.5 5a.75.75 0 01-1.112 0l-4.5-5a.75.75 0 111.082-1.04l3.21 3.565V3.75a.75.75 0 011.5 0v15.175l3.212-3.566a.75.75 0 011.06-.019z"/></svg>
+        <i class="fas fa-download"></i>
         Download for Android
       </button>
       <button class="dl-platform" id="iosBtn">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+        <i class="fab fa-apple"></i>
         iOS App
         <span class="soon-badge">Soon</span>
       </button>
       <button class="dl-platform" id="windowsBtn">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.551H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/></svg>
+        <i class="fab fa-windows"></i>
         Windows App
         <span class="soon-badge">Soon</span>
       </button>
@@ -1567,13 +1747,13 @@ footer{
   </div>
 </section>
 
-<!-- FOOTER -->
+<!-- ── FOOTER ── -->
 <footer>
-  <div class="footer-logo">Career Navigator</div>
+  <div class="footer-logo"><i class="fas fa-compass" style="margin-right:8px;"></i>Career Navigator</div>
   <div class="footer-links">
     <a href="#features">Features</a>
     <a href="#how">How it works</a>
-    <a href="#about">Team</a>
+    <a href="#about">About</a>
     <a href="#download">Download</a>
   </div>
   <div class="footer-copy">© 2026 Career Navigator · ICT University · OOA&amp;D Project</div>
@@ -1581,19 +1761,64 @@ footer{
 
 </div><!-- /wrap -->
 
-<!-- MODAL -->
+<!-- ── MODAL ── -->
 <div id="modal" class="modal-overlay">
   <div class="modal-box">
     <div class="modal-icon-wrap" id="modalIconWrap">⬇️</div>
     <h3 id="modalTitle">Opening Download</h3>
     <p id="modalMsg">Your download will start automatically.</p>
-    <button class="modal-close" id="modalCloseBtn">Continue to Download</button>
+    <button class="modal-close" id="modalCloseBtn">Got it ✓</button>
+  </div>
+</div>
+
+<!-- ── TECH MODAL ── -->
+<div class="tech-modal-overlay" id="techModal">
+  <div class="tech-modal-box">
+    <div class="tech-modal-header">
+      <div class="tech-modal-icon" id="tmIcon">📱</div>
+      <div class="tech-modal-meta">
+        <div class="tech-modal-badge" id="tmBadge">Frontend</div>
+        <div class="tech-modal-name" id="tmName">Flutter</div>
+        <div class="tech-modal-tagline" id="tmTagline">Cross-platform mobile framework by Google</div>
+      </div>
+      <button class="tech-modal-close" id="techModalClose"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="tech-modal-body">
+      <div class="tech-modal-section-label">How it's used in Career Navigator</div>
+      <p class="tech-modal-desc" id="tmDesc"></p>
+      <div class="tech-modal-points" id="tmPoints"></div>
+      <div class="tech-modal-section-label">Key packages / features</div>
+      <div class="tech-modal-pills" id="tmPills"></div>
+    </div>
   </div>
 </div>
 
 <script>
-// ── Config ──────────────────────────────
-const APK_FILE = "career_navigator.apk"; // APK sits next to index.html
+// ════════════════════════════════════════
+// SNOW / PARTICLE EFFECT (Bottom to Top)
+// ════════════════════════════════════════
+(function createSnow() {
+  const container = document.getElementById('snowContainer');
+  const count = 80;
+  const symbols = ['✦', '❄', '❅', '❆', '◆', '◇', '●', '○', '•', '·', '⋆', '✧', '✦'];
+  
+  for (let i = 0; i < count; i++) {
+    const el = document.createElement('div');
+    el.className = 'snowflake';
+    el.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+    el.style.left = Math.random() * 100 + '%';
+    el.style.fontSize = (Math.random() * 10 + 6) + 'px';
+    el.style.opacity = Math.random() * 0.5 + 0.1;
+    el.style.animationDuration = (Math.random() * 15 + 10) + 's';
+    el.style.animationDelay = (Math.random() * 20) + 's';
+    el.style.transform = `scale(${Math.random() * 0.6 + 0.4})`;
+    container.appendChild(el);
+  }
+})();
+
+// ── Config ──────────────────────────────────────────────
+// ✅ FIXED: Download the correct file from your folder structure
+const APK_FILE = "career_navigator.apk";
 
 function downloadAPK(){
   const a = document.createElement('a');
@@ -1603,6 +1828,8 @@ function downloadAPK(){
   a.click();
   document.body.removeChild(a);
 }
+
+// ── Cursors ──────────────────────────────────────────────
 const cur = document.getElementById('cursor');
 const ring = document.getElementById('cursor-ring');
 let mx=0,my=0,rx=0,ry=0;
@@ -1630,7 +1857,7 @@ document.querySelectorAll('a,button,[data-feat]').forEach(el=>{
   });
 });
 
-// ── Feature card mouse glow ────────────
+// ── Feature card mouse glow ──────────────────────────
 document.querySelectorAll('.feat').forEach(el=>{
   el.addEventListener('mousemove',e=>{
     const r=el.getBoundingClientRect();
@@ -1639,7 +1866,7 @@ document.querySelectorAll('.feat').forEach(el=>{
   });
 });
 
-// ── Marquee ────────────────────────────
+// ── Marquee ──────────────────────────────────────────────
 const marqueeItems = [
   'AI Career Coaching','Mentor Network','Smart Job Matching',
   'Salary Negotiation','Skill Assessment','Real-time Chat',
@@ -1650,15 +1877,12 @@ function buildMarquee(){
   const track = document.getElementById('marqueeTrack');
   const double = [...marqueeItems,...marqueeItems];
   track.innerHTML = double.map(t=>
-    `<div class="marquee-item">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-      ${t}
-    </div><span class="marquee-dot">·</span>`
+    `<div class="marquee-item"><i class="fas fa-bolt"></i> ${t}</div><span class="marquee-dot">·</span>`
   ).join('');
 }
 buildMarquee();
 
-// ── Scroll reveal ──────────────────────
+// ── Scroll reveal ──────────────────────────────────────
 const io = new IntersectionObserver((entries)=>{
   entries.forEach(e=>{
     if(e.isIntersecting) e.target.classList.add('visible');
@@ -1666,7 +1890,7 @@ const io = new IntersectionObserver((entries)=>{
 },{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
-// ── Count-up ───────────────────────────
+// ── Count-up ────────────────────────────────────────────
 function countUp(el,target,suffix=''){
   let start=0,dur=1800,step=16;
   const inc=target/(dur/step);
@@ -1687,7 +1911,7 @@ const countIo=new IntersectionObserver(entries=>{
 });
 document.querySelectorAll('[data-target]').forEach(el=>countIo.observe(el));
 
-// ── Modal ──────────────────────────────
+// ── Modal ────────────────────────────────────────────────
 const modal=document.getElementById('modal');
 const modalClose=document.getElementById('modalCloseBtn');
 
@@ -1696,11 +1920,10 @@ function showDownloadModal(){
   document.getElementById('modalIconWrap').className='modal-icon-wrap info';
   document.getElementById('modalTitle').textContent='Download Starting…';
   document.getElementById('modalMsg').textContent=
-    'Your APK download has started automatically. Once installed, enable "Install from unknown sources" in your Android settings if prompted.';
+    'Your Career Navigator download has started automatically. Once installed, enable "Install from unknown sources" in your Android settings if prompted.';
   modalClose.textContent='Got it ✓';
   modalClose.onclick=()=>{ closeModal(); };
   modal.classList.add('open');
-  // Trigger the direct download
   downloadAPK();
 }
 
@@ -1716,7 +1939,6 @@ function showComingSoon(platform){
 }
 
 function closeModal(){modal.classList.remove('open');}
-
 modal.addEventListener('click',e=>{if(e.target===modal) closeModal();});
 
 document.getElementById('mainDownloadBtn').addEventListener('click',showDownloadModal);
@@ -1724,115 +1946,91 @@ document.getElementById('ctaDownloadBtn').addEventListener('click',showDownloadM
 document.getElementById('iosBtn').addEventListener('click',()=>showComingSoon('iOS'));
 document.getElementById('windowsBtn').addEventListener('click',()=>showComingSoon('Windows'));
 
-// ── Screen Carousel ───────────────────────────────────────
+// ── Screen Carousel ──────────────────────────────────────
 const screensData = [
-  {
-    label:'Dashboard', dot:'',
-    html:`
-      <div class="sc-head"><span class="sc-title">Dashboard 🏠</span><div class="sc-dot"></div></div>
-      <div class="sc-body">
-        <div class="sc-card">
-          <div class="sc-card-title">Senior Flutter Dev · TechCorp</div>
-          <div class="sc-card-sub">Douala, CM · $1500–$3000/mo</div>
-          <div class="sc-bar"><div class="sc-bar-fill" style="width:88%"></div></div>
-          <div class="sc-badge">✦ 94% AI Match</div>
-        </div>
-        <div class="sc-card"><div class="sc-card-title">AI Coach Ready ✦</div><div class="sc-card-sub">7 tools available now</div></div>
-        <div class="sc-ai-bubble"><div class="sc-ai-text">✦ "Your Flutter skills rank top 12% in West Africa"</div></div>
-      </div>`
-  },
-  {
-    label:'Jobs',
-    html:`
-      <div class="sc-head"><span class="sc-title">Job Listings 💼</span><div class="sc-dot" style="background:linear-gradient(135deg,#9B5DE5,#EC4899)"></div></div>
-      <div class="sc-body">
-        <div class="sc-card"><div class="sc-card-title">Backend Engineer</div><div class="sc-card-sub">DataFlow · Remote · $1.2K</div><div class="sc-bar"><div class="sc-bar-fill" style="width:76%;background:linear-gradient(90deg,#9B5DE5,#EC4899)"></div></div></div>
-        <div class="sc-card"><div class="sc-card-title">ML Engineer</div><div class="sc-card-sub">AI Labs Africa · $2K–$4K</div></div>
-        <div class="sc-card"><div class="sc-card-title">Mobile Dev Intern</div><div class="sc-card-sub">InnovateCM · Yaoundé</div><div class="sc-badge" style="background:rgba(155,93,229,0.15);border-color:rgba(155,93,229,0.3);color:#9B5DE5">Internship</div></div>
-      </div>`
-  },
-  {
-    label:'AI Hub',
-    html:`
-      <div class="sc-head"><span class="sc-title">AI Career Hub ✦</span><div class="sc-dot" style="background:linear-gradient(135deg,#10B981,#059669)"></div></div>
-      <div class="sc-body">
-        <div class="sc-ai-bubble"><div class="sc-ai-text">🗺️  Career Path Advisor</div></div>
-        <div class="sc-ai-bubble"><div class="sc-ai-text">💰  Salary Negotiation Coach</div></div>
-        <div class="sc-ai-bubble"><div class="sc-ai-text">🔄  Career Switch Simulator</div></div>
-        <div class="sc-ai-bubble"><div class="sc-ai-text">🤝  Network Outreach Writer</div></div>
-        <div class="sc-ai-bubble"><div class="sc-ai-text">💬  Free AI Chat</div></div>
-      </div>`
-  },
-  {
-    label:'Mentors',
-    html:`
-      <div class="sc-head"><span class="sc-title">Discover People 🌐</span><div class="sc-dot" style="background:linear-gradient(135deg,#F59E0B,#EF4444)"></div></div>
-      <div class="sc-body">
-        <div class="sc-avatar-row">
-          <div class="sc-avatar">TF</div>
-          <div class="sc-avatar sc-avatar2">YL</div>
-          <div class="sc-avatar sc-avatar3">AB</div>
-        </div>
-        <div class="sc-card"><div class="sc-card-title">Fahdil Moussa</div><div class="sc-card-sub">⭐ 4.9 · Full-Stack Engineer</div><div class="sc-badge">Top Mentor</div></div>
-        <div class="sc-card"><div class="sc-card-title">35 sessions · Accepting</div><div class="sc-card-sub">Connect · Message</div></div>
-      </div>`
-  },
-  {
-    label:'Chat',
-    html:`
-      <div class="sc-head"><span class="sc-title">Messages 💬</span><div class="sc-dot" style="background:linear-gradient(135deg,#3B82F6,#06B6D4)"></div></div>
-      <div class="sc-body">
-        <div class="sc-card"><div class="sc-card-title">Fahdil Moussa 🟢</div><div class="sc-card-sub">Let's schedule a session</div></div>
-        <div style="height:6px"></div>
-        <div class="sc-ai-bubble" style="border-radius:10px 10px 10px 3px"><div class="sc-ai-text">Hi! Ready for your session? 👋</div></div>
-        <div class="sc-ai-bubble" style="border-radius:10px 10px 3px 10px;text-align:right;margin-left:10px"><div class="sc-ai-text">Yes! Let's start with resume review ✅</div></div>
-      </div>`
-  },
-  {
-    label:'Profile',
-    html:`
-      <div class="sc-head"><span class="sc-title">Edit Profile 👤</span><div class="sc-dot" style="background:linear-gradient(135deg,#EC4899,#9B5DE5)"></div></div>
-      <div class="sc-body">
-        <div style="text-align:center;margin-bottom:10px">
-          <div style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#EC4899,#9B5DE5);margin:0 auto 4px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff">TF</div>
-          <div style="font-size:8px;color:var(--muted)">Tap to change photo</div>
-        </div>
-        <div class="sc-menu-item"><div class="sc-menu-icon"></div><div class="sc-menu-text">Basic Info · Name · Bio</div></div>
-        <div class="sc-menu-item"><div class="sc-menu-icon"></div><div class="sc-menu-text">Career · Job Titles</div></div>
-        <div class="sc-menu-item"><div class="sc-menu-icon"></div><div class="sc-menu-text">Skills · Add / Remove</div></div>
-        <div class="sc-menu-item"><div class="sc-menu-icon"></div><div class="sc-menu-text">Education · Experience</div></div>
-      </div>`
-  },
-  {
-    label:'Skills',
-    html:`
-      <div class="sc-head"><span class="sc-title">Skill Assessment 🧠</span><div class="sc-dot" style="background:linear-gradient(135deg,#10B981,#3B82F6)"></div></div>
-      <div class="sc-body">
-        <div class="sc-card">
-          <div class="sc-card-title">Flutter · 72% 🔥</div>
-          <div class="sc-bar"><div class="sc-bar-fill" style="width:72%;background:linear-gradient(90deg,#10B981,#3B82F6)"></div></div>
-          <div class="sc-badge">Intermediate</div>
-        </div>
-        <div class="sc-card">
-          <div class="sc-card-title">Python · 58%</div>
-          <div class="sc-bar"><div class="sc-bar-fill" style="width:58%;background:linear-gradient(90deg,#10B981,#3B82F6)"></div></div>
-        </div>
-        <div class="sc-ai-bubble"><div class="sc-ai-text">🏆 Achievement Unlocked! +75 XP</div></div>
-      </div>`
-  },
-  {
-    label:'Settings',
-    html:`
-      <div class="sc-head"><span class="sc-title">Settings ⚙️</span><div class="sc-dot" style="background:linear-gradient(135deg,#6B7B99,#374151)"></div></div>
-      <div class="sc-body">
-        <div class="sc-menu-item"><div class="sc-menu-icon"></div><div class="sc-menu-text">🌙  Dark Mode · ON</div></div>
-        <div class="sc-menu-item"><div class="sc-menu-icon"></div><div class="sc-menu-text">🌍  Language · EN / FR</div></div>
-        <div class="sc-menu-item"><div class="sc-menu-icon"></div><div class="sc-menu-text">👤  Edit Profile</div></div>
-        <div class="sc-menu-item"><div class="sc-menu-icon"></div><div class="sc-menu-text">❓  Help & FAQ</div></div>
-        <div class="sc-menu-item"><div class="sc-menu-icon"></div><div class="sc-menu-text">ℹ️  About Us</div></div>
-        <div class="sc-menu-item"><div class="sc-menu-icon"></div><div class="sc-menu-text">🚪  Logout</div></div>
-      </div>`
-  },
+  {label:'Dashboard', html:`
+    <div class="sc-head"><span class="sc-title"><i class="fas fa-home"></i> Dashboard</span><div class="sc-dot"></div></div>
+    <div class="sc-body">
+      <div class="sc-card">
+        <div class="sc-card-title">Senior Flutter Dev · TechCorp</div>
+        <div class="sc-card-sub">Douala, CM · $1500–$3000/mo</div>
+        <div class="sc-bar"><div class="sc-bar-fill" style="width:88%"></div></div>
+        <div class="sc-badge">✦ 94% AI Match</div>
+      </div>
+      <div class="sc-card"><div class="sc-card-title"><i class="fas fa-robot"></i> AI Coach Ready</div><div class="sc-card-sub">7 tools available now</div></div>
+      <div class="sc-ai-bubble"><div class="sc-ai-text">✦ "Your Flutter skills rank top 12% in West Africa"</div></div>
+    </div>`},
+  {label:'Jobs', html:`
+    <div class="sc-head"><span class="sc-title"><i class="fas fa-briefcase"></i> Job Listings</span><div class="sc-dot" style="background:linear-gradient(135deg,#9B5DE5,#EC4899)"></div></div>
+    <div class="sc-body">
+      <div class="sc-card"><div class="sc-card-title">Backend Engineer</div><div class="sc-card-sub">DataFlow · Remote · $1.2K</div><div class="sc-bar"><div class="sc-bar-fill" style="width:76%;background:linear-gradient(90deg,#9B5DE5,#EC4899)"></div></div></div>
+      <div class="sc-card"><div class="sc-card-title">ML Engineer</div><div class="sc-card-sub">AI Labs Africa · $2K–$4K</div></div>
+      <div class="sc-card"><div class="sc-card-title">Mobile Dev Intern</div><div class="sc-card-sub">InnovateCM · Yaoundé</div><div class="sc-badge" style="background:rgba(155,93,229,0.15);border-color:rgba(155,93,229,0.3);color:#9B5DE5">Internship</div></div>
+    </div>`},
+  {label:'AI Hub', html:`
+    <div class="sc-head"><span class="sc-title"><i class="fas fa-robot"></i> AI Career Hub</span><div class="sc-dot" style="background:linear-gradient(135deg,#10B981,#059669)"></div></div>
+    <div class="sc-body">
+      <div class="sc-ai-bubble"><div class="sc-ai-text">🗺️ Career Path Advisor</div></div>
+      <div class="sc-ai-bubble"><div class="sc-ai-text">💰 Salary Negotiation Coach</div></div>
+      <div class="sc-ai-bubble"><div class="sc-ai-text">🔄 Career Switch Simulator</div></div>
+      <div class="sc-ai-bubble"><div class="sc-ai-text">🤝 Network Outreach Writer</div></div>
+      <div class="sc-ai-bubble"><div class="sc-ai-text">💬 Free AI Chat</div></div>
+    </div>`},
+  {label:'Mentors', html:`
+    <div class="sc-head"><span class="sc-title"><i class="fas fa-users"></i> Discover People</span><div class="sc-dot" style="background:linear-gradient(135deg,#F59E0B,#EF4444)"></div></div>
+    <div class="sc-body">
+      <div class="sc-avatar-row">
+        <div class="sc-avatar">TF</div>
+        <div class="sc-avatar sc-avatar2">YL</div>
+        <div class="sc-avatar sc-avatar3">AB</div>
+      </div>
+      <div class="sc-card"><div class="sc-card-title">Fahdil Moussa</div><div class="sc-card-sub">⭐ 4.9 · Full-Stack Engineer</div><div class="sc-badge">Top Mentor</div></div>
+      <div class="sc-card"><div class="sc-card-title">35 sessions · Accepting</div><div class="sc-card-sub">Connect · Message</div></div>
+    </div>`},
+  {label:'Chat', html:`
+    <div class="sc-head"><span class="sc-title"><i class="fas fa-comment-dots"></i> Messages</span><div class="sc-dot" style="background:linear-gradient(135deg,#3B82F6,#06B6D4)"></div></div>
+    <div class="sc-body">
+      <div class="sc-card"><div class="sc-card-title">Fahdil Moussa 🟢</div><div class="sc-card-sub">Let's schedule a session</div></div>
+      <div style="height:6px"></div>
+      <div class="sc-ai-bubble" style="border-radius:10px 10px 10px 3px"><div class="sc-ai-text">Hi! Ready for your session? 👋</div></div>
+      <div class="sc-ai-bubble" style="border-radius:10px 10px 3px 10px;text-align:right;margin-left:10px"><div class="sc-ai-text">Yes! Let's start with resume review ✅</div></div>
+    </div>`},
+  {label:'Profile', html:`
+    <div class="sc-head"><span class="sc-title"><i class="fas fa-user"></i> Edit Profile</span><div class="sc-dot" style="background:linear-gradient(135deg,#EC4899,#9B5DE5)"></div></div>
+    <div class="sc-body">
+      <div style="text-align:center;margin-bottom:10px">
+        <div style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#EC4899,#9B5DE5);margin:0 auto 4px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff">TF</div>
+        <div style="font-size:8px;color:var(--muted)">Tap to change photo</div>
+      </div>
+      <div class="sc-menu-item"><div class="sc-menu-icon"></div><div class="sc-menu-text">Basic Info · Name · Bio</div></div>
+      <div class="sc-menu-item"><div class="sc-menu-icon"></div><div class="sc-menu-text">Career · Job Titles</div></div>
+      <div class="sc-menu-item"><div class="sc-menu-icon"></div><div class="sc-menu-text">Skills · Add / Remove</div></div>
+      <div class="sc-menu-item"><div class="sc-menu-icon"></div><div class="sc-menu-text">Education · Experience</div></div>
+    </div>`},
+  {label:'Skills', html:`
+    <div class="sc-head"><span class="sc-title"><i class="fas fa-chart-line"></i> Skill Assessment</span><div class="sc-dot" style="background:linear-gradient(135deg,#10B981,#3B82F6)"></div></div>
+    <div class="sc-body">
+      <div class="sc-card">
+        <div class="sc-card-title">Flutter · 72% 🔥</div>
+        <div class="sc-bar"><div class="sc-bar-fill" style="width:72%;background:linear-gradient(90deg,#10B981,#3B82F6)"></div></div>
+        <div class="sc-badge">Intermediate</div>
+      </div>
+      <div class="sc-card">
+        <div class="sc-card-title">Python · 58%</div>
+        <div class="sc-bar"><div class="sc-bar-fill" style="width:58%;background:linear-gradient(90deg,#10B981,#3B82F6)"></div></div>
+      </div>
+      <div class="sc-ai-bubble"><div class="sc-ai-text">🏆 Achievement Unlocked! +75 XP</div></div>
+    </div>`},
+  {label:'Settings', html:`
+    <div class="sc-head"><span class="sc-title"><i class="fas fa-cog"></i> Settings</span><div class="sc-dot" style="background:linear-gradient(135deg,#6B7B99,#374151)"></div></div>
+    <div class="sc-body">
+      <div class="sc-menu-item"><div class="sc-menu-icon"></div><div class="sc-menu-text">🌙 Dark Mode · ON</div></div>
+      <div class="sc-menu-item"><div class="sc-menu-icon"></div><div class="sc-menu-text">🌍 Language · EN / FR</div></div>
+      <div class="sc-menu-item"><div class="sc-menu-icon"></div><div class="sc-menu-text">👤 Edit Profile</div></div>
+      <div class="sc-menu-item"><div class="sc-menu-icon"></div><div class="sc-menu-text">❓ Help & FAQ</div></div>
+      <div class="sc-menu-item"><div class="sc-menu-icon"></div><div class="sc-menu-text">ℹ️ About Us</div></div>
+      <div class="sc-menu-item"><div class="sc-menu-icon"></div><div class="sc-menu-text">🚪 Logout</div></div>
+    </div>`},
 ];
 
 (function buildScreens(){
@@ -1845,41 +2043,125 @@ const screensData = [
       ${s.html}
       <div class="sc-label">${s.label}</div>
       <div class="sc-bnav">
-        <div class="sc-bni a"><div class="sc-bni-dot">🏠</div>Home</div>
-        <div class="sc-bni"><div class="sc-bni-dot">💼</div>Jobs</div>
-        <div class="sc-bni"><div class="sc-bni-dot">💬</div>Chat</div>
-        <div class="sc-bni"><div class="sc-bni-dot">✦</div>AI</div>
+        <div class="sc-bni a"><i class="fas fa-home"></i>Home</div>
+        <div class="sc-bni"><i class="fas fa-briefcase"></i>Jobs</div>
+        <div class="sc-bni"><i class="fas fa-comment-dots"></i>Chat</div>
+        <div class="sc-bni"><i class="fas fa-robot"></i>AI</div>
       </div>
     </div>
   `).join('');
 })();
 
+// ── Floating Chat Bubble ────────────────────────────────────
+function toggleChat(){
+  const window = document.getElementById('chatWindow');
+  window.classList.toggle('open');
+}
 
-// ── Tech Modal ────────────────────────────────────────────────────
+function sendChat(){
+  const input = document.getElementById('chatInput');
+  const msg = input.value.trim();
+  if(!msg) return;
+  
+  const container = document.getElementById('chatMessages');
+  const time = new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+  
+  // User message
+  const userMsg = document.createElement('div');
+  userMsg.className = 'chat-msg user';
+  userMsg.innerHTML = msg + `<span class="chat-msg-time">${time}</span>`;
+  container.appendChild(userMsg);
+  
+  input.value = '';
+  container.scrollTop = container.scrollHeight;
+  
+  // Bot response (simulated)
+  setTimeout(() => {
+    const responses = [
+      "That's a great question! Let me help you with that.",
+      "I understand. Based on your profile, I'd recommend exploring the AI Career Hub for personalized guidance.",
+      "Great point! Have you checked out the mentor network? There are 500+ experts ready to help.",
+      "Thanks for sharing! The skill assessment tool can help you identify areas to focus on.",
+      "I'd suggest starting with the resume analyzer to optimize your profile for ATS systems."
+    ];
+    const botMsg = document.createElement('div');
+    botMsg.className = 'chat-msg bot';
+    botMsg.innerHTML = responses[Math.floor(Math.random() * responses.length)] + 
+      `<span class="chat-msg-time">${new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}</span>`;
+    container.appendChild(botMsg);
+    container.scrollTop = container.scrollHeight;
+  }, 800 + Math.random() * 400);
+  
+  // Disable send temporarily
+  const btn = document.getElementById('chatSendBtn');
+  btn.disabled = true;
+  setTimeout(() => btn.disabled = false, 1500);
+}
+
+// Enter key support for chat
+document.getElementById('chatInput').addEventListener('keypress', function(e){
+  if(e.key === 'Enter') sendChat();
+});
+
+// ── Tech Modal ──────────────────────────────────────────────
 const techData = {
-  flutter:{ icon:'📱',badge:'Frontend',name:'Flutter',tagline:'Cross-platform mobile framework by Google',desc:'Flutter is the entire mobile app of Career Navigator. Every screen — from splash to AI Hub — is built in Flutter with Dart. We chose Flutter for one codebase targeting both Android and iOS, a rich widget system, and near-native performance.',points:[['🏗️','Architecture','Provider pattern across AuthProvider, JobProvider, ChatProvider, NotificationProvider — fully reactive UI with no unnecessary rebuilds.'],['🎨','UI/UX','Custom dark theme with cyan accents, animated bottom nav, shimmer skeletons, staggered reveals, and smooth page transitions throughout.'],['🔌','API Layer','Dio HTTP client with JWT interceptors for automatic access token refresh on 401 — users never get logged out unexpectedly.'],['💬','Real-time','Socket.IO Flutter client for live chat: messages, typing indicators, read receipts, and online presence — all event-driven.'],['📸','Media','CachedNetworkImage with Cloudinary URLs for fast profile photo loading with local disk caching after first download.']],pills:['Provider','Dio','Socket.IO Client','CachedNetworkImage','ImagePicker','flutter_secure_storage','url_launcher','shared_preferences']},
-  python:{ icon:'🐍',badge:'Backend',name:'Python / Flask',tagline:'Lightweight REST API powering all 40+ endpoints',desc:'The entire Career Navigator backend is a Python Flask application. Flask was chosen for its simplicity, flexibility, and the rich Python ecosystem. It follows the Blueprint pattern — each module (auth, jobs, chat, profile, AI, posts) is a separate Blueprint registered at startup.',points:[['🗺️','Architecture','Blueprint-based modular routing with controllers, services, and repositories — clean separation of concerns and easy independent testing.'],['🔐','Auth','Flask-JWT-Extended for access/refresh token pairs, Flask-Bcrypt for password hashing (cost 12), and OTP email verification via Brevo.'],['🌐','CORS & Security','Flask-CORS for cross-origin requests, input validation on all endpoints, and rate limiting on sensitive OTP and auth routes.'],['⚡','Real-time','Flask-SocketIO with eventlet for async WebSocket handling — powers the live chat with user rooms and named events.'],['🚀','Deployment','Gunicorn WSGI server managed by PM2 on a Contabo VPS — auto-restart on crash, env variable management, zero-downtime reload.']],pills:['Flask','Flask-JWT-Extended','Flask-Bcrypt','Flask-CORS','Flask-SocketIO','PyMySQL','Cloudinary SDK','sib-api-v3-sdk','Gunicorn','PM2']},
-  mysql:{ icon:'🗄️',badge:'Database',name:'MySQL',tagline:'28-table relational schema — v9.0',desc:'Career Navigator uses MySQL 8.0 as its primary database. The v9.0 schema has 28 tables with proper foreign key relationships, performance indexes, and automated business logic via 9 triggers and 8 stored procedures — all auto-seeded on first run.',points:[['📊','Schema','28 tables: users, jobs, applications, mentors, connections, messages, AI conversations, posts, achievements, skill progress, activity log, and more.'],['⚡','Triggers','9 DB triggers: auto-update like/application counters, create conversations on mentor accept, award XP on job apply, notify on post like.'],['🔧','Procedures','8 stored procedures: admin stats, featured jobs, user statistics, connection status check, get-or-create conversation, idempotent achievement award.'],['📅','Events','2 scheduled MySQL events: nightly cleanup of expired OTPs and revoked tokens; daily streak reset for missed skill practice sessions.'],['🔍','Search','FULLTEXT indexes on job_listings, mentor_profiles, and posts enable fast keyword search across titles, descriptions and content.']],pills:['MySQL 8.0','28 Tables','9 Triggers','8 Procedures','2 Events','FULLTEXT Search','PyMySQL','Foreign Keys','Connection Pool']},
-  gemini:{ icon:'🤖',badge:'AI Engine',name:'Gemini AI',tagline:'Google Gemini 2.0 Flash — 7 career coaching tools',desc:'Google Gemini 2.0 Flash is the AI brain of Career Navigator. It powers the AI Career Hub — 7 specialized coaching tools that give contextual, personalized guidance based on each user\'s profile, skills, and full conversation session history.',points:[['🗺️','Career Path','Analyzes the user\'s skills, experience, and goals to generate a personalized career roadmap with milestones, timelines, and prioritized next steps.'],['💰','Salary Coach','Uses market context to generate negotiation scripts, counter-offer strategies, and salary justifications tailored to the user\'s target role.'],['🔄','Career Switch','Simulates a career transition: calculates skill gaps, estimated timeline, recommended learning resources, and realistic income projections.'],['🤝','Outreach Writer','Writes compelling LinkedIn connection messages and cold email templates tailored to the target person and the user\'s specific goal.'],['⭐','Review Coach','Generates performance review talking points, achievements summaries, growth areas, and self-assessment scripts based on the user\'s work history.'],['💬','Free Chat','Open-ended coaching — ask anything career-related and get expert AI responses with full session memory and context.']],pills:['Gemini 2.0 Flash','google-generativeai','Session History','7 Tool Modes','Context Window','Streaming Responses','Conversation Memory']},
-  cloudinary:{ icon:'☁️',badge:'Storage',name:'Cloudinary',tagline:'Cloud media platform — images, files and CDN',desc:'Cloudinary handles all user media in Career Navigator. Profile pictures, cover images, and chat file attachments are uploaded through the Flask backend to Cloudinary and served via the global CDN — ensuring fast loading across all of Africa.',points:[['📸','Profile Pictures','When a user changes their photo in Flutter, the image is sent to Flask which uploads it to Cloudinary and saves the returned secure URL in MySQL.'],['⚡','CDN Delivery','All images served via Cloudinary\'s global CDN with automatic WebP conversion on supported devices and edge caching for sub-second load times.'],['🔄','Transformation','Auto crop to square, compression, and resizing transformations applied on-the-fly — no manual image processing needed anywhere in the app.'],['📁','Organization','Media stored in organized Cloudinary folders: /profile-pictures, /cover-images, /chat-attachments — namespaced public IDs per user for clean management.']],pills:['Cloudinary Python SDK','Auto Upload','Global CDN','Image Transformation','WebP Auto-format','Secure URLs','Organized Folders']},
-  socketio:{ icon:'⚡',badge:'Real-time',name:'Socket.IO',tagline:'Bidirectional event-based real-time communication',desc:'Socket.IO powers the live chat in Career Navigator. When a user sends a message in Flutter, it travels via WebSocket to Flask-SocketIO, gets saved to MySQL, and is instantly pushed to the recipient\'s device — no polling, no delays.',points:[['📡','Architecture','Flask-SocketIO on the server with eventlet async. Flutter socket_io_client on mobile. Both use the same event names for clean protocol alignment.'],['🔐','Auth','JWT token passed as query param on the Socket.IO handshake — verified server-side before the client can join any room or emit any events.'],['📬','Events','Custom events: message:send, message:receive, user:online, user:typing, conversation:read — all scoped to per-user rooms for privacy and security.'],['⚡','Performance','Messages are persisted to MySQL asynchronously after real-time delivery — the WebSocket push is never blocked or slowed by a database write.']],pills:['Flask-SocketIO','socket_io_client (Flutter)','eventlet','JWT Auth','User Rooms','Typing Indicators','Read Receipts','Online Presence']},
-  brevo:{ icon:'📧',badge:'Email',name:'Brevo',tagline:'Transactional email — OTP, verification and resets',desc:'Brevo (formerly Sendinblue) handles all transactional emails. It is used for OTP verification on registration, password reset codes, and email change confirmations — delivered within seconds via Brevo\'s SMTP infrastructure.',points:[['✉️','Registration OTP','On signup, a 6-digit OTP is generated, stored in MySQL with a 15-min expiry, and sent to the user\'s email via Brevo API — verified before account activation.'],['🔑','Password Reset','User enters email → 6-digit OTP sent via Brevo → user types code in app → validated against MySQL → new password accepted. Codes are single-use.'],['📝','Templates','Branded HTML email templates with Career Navigator logo, dark theme styling — professional and consistent look across all transactional messages.'],['🛡️','Rate Limiting','Max 3 OTP requests per email per hour — prevents email bombing and protects the Brevo API quota from accidental or malicious abuse.']],pills:['sib-api-v3-sdk','Transactional Email','OTP Delivery','HTML Templates','Rate Limiting','15-min Expiry','Single-use Codes']},
-  jwt:{ icon:'🔒',badge:'Security',name:'JWT + Bcrypt',tagline:'Dual-token auth system with secure password hashing',desc:'Career Navigator uses a dual-token JWT system — a short-lived access token (15 min) and a long-lived refresh token (30 days). Bcrypt hashes passwords at cost 12. Token refresh happens silently in the Flutter app via a Dio interceptor — users stay logged in seamlessly.',points:[['🎫','Access Token','Short-lived JWT (15 min) in every API Authorization header. Verified server-side via Flask-JWT-Extended decorator on all protected routes.'],['🔄','Refresh Token','Long-lived token (30 days) stored in Flutter SecureStorage. Dio interceptor auto-requests a new access token before it expires — silent refresh.'],['🔐','Password Hashing','Bcrypt cost factor 12 — each hash takes ~200ms, making brute-force attacks against any leaked database computationally impractical.'],['🚫','Revocation','Refresh tokens stored in MySQL and flagged revoked on logout — prevents reuse even if a token is intercepted from a compromised device.'],['📧','OTP Factor','Email OTP adds a verification step for registration and password reset — single-use codes with 15-minute expiry for both actions.']],pills:['Flask-JWT-Extended','Flask-Bcrypt','Access Token 15min','Refresh Token 30d','flutter_secure_storage','Dio Interceptor','Token Rotation','OTP 2FA']}
+  flutter:{ icon:'<i class="fab fa-flutter"></i>',badge:'Frontend',name:'Flutter',tagline:'Cross-platform mobile framework by Google',
+    desc:'Flutter is the entire mobile app of Career Navigator. Every screen — from splash to AI Hub — is built in Flutter with Dart. We chose Flutter for one codebase targeting both Android and iOS, a rich widget system, and near-native performance.',
+    points:[['🏗️','Architecture','Provider pattern across AuthProvider, JobProvider, ChatProvider, NotificationProvider — fully reactive UI with no unnecessary rebuilds.'],
+            ['🎨','UI/UX','Custom dark theme with cyan accents, animated bottom nav, shimmer skeletons, staggered reveals, and smooth page transitions throughout.'],
+            ['🔌','API Layer','Dio HTTP client with JWT interceptors for automatic access token refresh on 401 — users never get logged out unexpectedly.']],
+    pills:['Provider','Dio','Socket.IO Client','CachedNetworkImage','ImagePicker','flutter_secure_storage']},
+  python:{ icon:'<i class="fab fa-python"></i>',badge:'Backend',name:'Python / Flask',tagline:'Lightweight REST API powering all 40+ endpoints',
+    desc:'The entire Career Navigator backend is a Python Flask application. Flask was chosen for its simplicity, flexibility, and the rich Python ecosystem. It follows the Blueprint pattern — each module (auth, jobs, chat, profile, AI, posts) is a separate Blueprint.',
+    points:[['🗺️','Architecture','Blueprint-based modular routing with controllers, services, and repositories — clean separation of concerns.'],
+            ['🔐','Auth','Flask-JWT-Extended for access/refresh token pairs, Flask-Bcrypt for password hashing, and OTP email verification via Brevo.']],
+    pills:['Flask','Flask-JWT-Extended','Flask-Bcrypt','Flask-CORS','Flask-SocketIO','PyMySQL','Cloudinary SDK','Gunicorn','PM2']},
+  mysql:{ icon:'<i class="fas fa-database"></i>',badge:'Database',name:'MySQL',tagline:'28-table relational schema — v9.0',
+    desc:'Career Navigator uses MySQL 8.0 as its primary database. The v9.0 schema has 28 tables with proper foreign key relationships, performance indexes, and automated business logic via 9 triggers and 8 stored procedures.',
+    points:[['📊','Schema','28 tables: users, jobs, applications, mentors, connections, messages, AI conversations, posts, achievements, skill progress, activity log.'],
+            ['⚡','Triggers','9 DB triggers: auto-update like/application counters, create conversations on mentor accept, award XP on job apply.']],
+    pills:['MySQL 8.0','28 Tables','9 Triggers','8 Procedures','FULLTEXT Search','PyMySQL','Foreign Keys']},
+  gemini:{ icon:'<i class="fas fa-robot"></i>',badge:'AI Engine',name:'Gemini AI',tagline:'Google Gemini 2.0 Flash — 7 career coaching tools',
+    desc:'Google Gemini 2.0 Flash is the AI brain of Career Navigator. It powers the AI Career Hub — 7 specialized coaching tools that give contextual, personalized guidance based on each user\'s profile.',
+    points:[['🗺️','Career Path','Analyzes skills, experience, and goals to generate a personalized career roadmap with milestones and timelines.'],
+            ['💰','Salary Coach','Generates negotiation scripts, counter-offer strategies, and salary justifications tailored to the user\'s target role.']],
+    pills:['Gemini 2.0 Flash','google-generativeai','Session History','7 Tool Modes','Context Window']},
+  cloudinary:{ icon:'<i class="fas fa-cloud-upload-alt"></i>',badge:'Storage',name:'Cloudinary',tagline:'Cloud media platform — images, files and CDN',
+    desc:'Cloudinary handles all user media in Career Navigator. Profile pictures, cover images, and chat file attachments are uploaded through the Flask backend to Cloudinary and served via the global CDN.',
+    points:[['📸','Profile Pictures','User photos uploaded to Cloudinary and saved in MySQL as secure URLs.'],
+            ['⚡','CDN Delivery','Global CDN with automatic WebP conversion and edge caching for sub-second load times.']],
+    pills:['Cloudinary Python SDK','Auto Upload','Global CDN','Image Transformation','WebP Auto-format']},
+  socketio:{ icon:'<i class="fas fa-bolt"></i>',badge:'Real-time',name:'Socket.IO',tagline:'Bidirectional event-based real-time communication',
+    desc:'Socket.IO powers the live chat in Career Navigator. When a user sends a message in Flutter, it travels via WebSocket to Flask-SocketIO, gets saved to MySQL, and is instantly pushed to the recipient\'s device.',
+    points:[['📡','Architecture','Flask-SocketIO with eventlet async. Flutter socket_io_client. Both use the same event names for clean protocol alignment.'],
+            ['🔐','Auth','JWT token passed as query param on the handshake — verified before the client can join any room.']],
+    pills:['Flask-SocketIO','socket_io_client','eventlet','User Rooms','Typing Indicators','Read Receipts']},
+  brevo:{ icon:'<i class="fas fa-envelope"></i>',badge:'Email',name:'Brevo',tagline:'Transactional email — OTP, verification and resets',
+    desc:'Brevo (formerly Sendinblue) handles all transactional emails. It is used for OTP verification on registration, password reset codes, and email change confirmations.',
+    points:[['✉️','Registration OTP','6-digit OTP generated, stored in MySQL with 15-min expiry, and sent via Brevo API.'],
+            ['🔑','Password Reset','User enters email → OTP sent via Brevo → validated against MySQL → new password accepted.']],
+    pills:['sib-api-v3-sdk','Transactional Email','OTP Delivery','HTML Templates','Rate Limiting','15-min Expiry']},
+  jwt:{ icon:'<i class="fas fa-lock"></i>',badge:'Security',name:'JWT + Bcrypt',tagline:'Dual-token auth system with secure password hashing',
+    desc:'Career Navigator uses a dual-token JWT system — a short-lived access token (15 min) and a long-lived refresh token (30 days). Bcrypt hashes passwords at cost 12.',
+    points:[['🎫','Access Token','Short-lived JWT (15 min) in every API Authorization header.'],
+            ['🔄','Refresh Token','Long-lived token (30 days) stored in Flutter SecureStorage. Dio interceptor auto-refreshes.'],
+            ['🔐','Password Hashing','Bcrypt cost factor 12 — each hash takes ~200ms.']],
+    pills:['Flask-JWT-Extended','Flask-Bcrypt','Access Token 15min','Refresh Token 30d','flutter_secure_storage','Dio Interceptor']}
 };
 
 function openTechModal(key) {
   const d = techData[key];
   if(!d) return;
-  document.getElementById('tmIcon').textContent    = d.icon;
-  document.getElementById('tmBadge').textContent   = d.badge;
-  document.getElementById('tmName').textContent    = d.name;
+  document.getElementById('tmIcon').innerHTML = d.icon;
+  document.getElementById('tmBadge').textContent = d.badge;
+  document.getElementById('tmName').textContent = d.name;
   document.getElementById('tmTagline').textContent = d.tagline;
-  document.getElementById('tmDesc').textContent    = d.desc;
+  document.getElementById('tmDesc').textContent = d.desc;
   document.getElementById('tmPoints').innerHTML = d.points.map(p =>
-    '<div class="tech-modal-point"><span class="tech-modal-point-icon">'+p[0]+'</span><span class="tech-modal-point-text"><strong>'+p[1]+':</strong> '+p[2]+'</span></div>'
+    `<div class="tech-modal-point"><span class="tech-modal-point-icon">${p[0]}</span><span class="tech-modal-point-text"><strong>${p[1]}:</strong> ${p[2]}</span></div>`
   ).join('');
   document.getElementById('tmPills').innerHTML = d.pills.map(p =>
-    '<span class="tech-modal-pill">'+p+'</span>'
+    `<span class="tech-modal-pill">${p}</span>`
   ).join('');
   document.getElementById('techModal').classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -1891,30 +2173,6 @@ function closeTechModal() {
 document.getElementById('techModalClose').addEventListener('click', closeTechModal);
 document.getElementById('techModal').addEventListener('click', function(e){ if(e.target===this) closeTechModal(); });
 document.addEventListener('keydown', e => { if(e.key==='Escape') closeTechModal(); });
-
 </script>
-
-<!-- TECH MODAL -->
-<div class="tech-modal-overlay" id="techModal">
-  <div class="tech-modal-box">
-    <div class="tech-modal-header">
-      <div class="tech-modal-icon" id="tmIcon">📱</div>
-      <div class="tech-modal-meta">
-        <div class="tech-modal-badge" id="tmBadge">Frontend</div>
-        <div class="tech-modal-name" id="tmName">Flutter</div>
-        <div class="tech-modal-tagline" id="tmTagline">Cross-platform mobile framework by Google</div>
-      </div>
-      <button class="tech-modal-close" id="techModalClose">✕</button>
-    </div>
-    <div class="tech-modal-body">
-      <div class="tech-modal-section-label">How it's used in Career Navigator</div>
-      <p class="tech-modal-desc" id="tmDesc"></p>
-      <div class="tech-modal-points" id="tmPoints"></div>
-      <div class="tech-modal-section-label">Key packages / features</div>
-      <div class="tech-modal-pills" id="tmPills"></div>
-    </div>
-  </div>
-</div>
-
 </body>
 </html>
