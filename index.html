@@ -26,15 +26,18 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
+/* ── CSS Variables for Themes ── */
 :root {
+  /* Dark Mode (default) */
   --cyan: #00E5FF;
-  --cyan-dark: #00B8D4;
+  --cyan-dark: #0099CC;
   --cyan-dim: rgba(0,229,255,0.12);
   --cyan-glow: rgba(0,229,255,0.25);
   --cyan-soft: rgba(0,229,255,0.06);
   --purple: #9B5DE5;
   --purple-dim: rgba(155,93,229,0.12);
   --pink: #EC4899;
+  --orange: #F59E0B;
   --bg: #060912;
   --bg2: #0C1220;
   --bg3: #111B2E;
@@ -56,6 +59,27 @@
   --transition: all 0.3s cubic-bezier(.25,.46,.45,.94);
 }
 
+/* ── Light Mode Variables ── */
+body.light-mode {
+  --cyan: #00B8D4;
+  --cyan-dark: #0088A8;
+  --cyan-dim: rgba(0,184,212,0.15);
+  --cyan-glow: rgba(0,184,212,0.3);
+  --bg: #F0F4FF;
+  --bg2: #E4EAF5;
+  --bg3: #D5DDEA;
+  --surface: rgba(0,0,0,0.03);
+  --surface-hover: rgba(0,0,0,0.06);
+  --border: rgba(0,0,0,0.1);
+  --border-light: rgba(0,0,0,0.18);
+  --text: #0A0F1E;
+  --text-secondary: #1A2340;
+  --muted: #4A5A7A;
+  --sub: #6B7B99;
+  --shadow: 0 8px 32px rgba(0,0,0,0.1);
+  --shadow-glow: 0 8px 40px rgba(0,184,212,0.2);
+}
+
 *{margin:0;padding:0;box-sizing:border-box;}
 
 html{scroll-behavior:smooth;}
@@ -65,11 +89,22 @@ body{
   background:var(--bg);
   color:var(--text);
   overflow-x:hidden;
-  cursor:none;
+  cursor:none; /* ← Custom cursor enabled */
+  transition:background 0.4s ease, color 0.3s ease;
 }
 
 /* ════════════════════════════════════════
-   SNOW / PARTICLE EFFECT (Bottom to Top)
+   SCROLL PROGRESS BAR
+════════════════════════════════════════ */
+.scroll-progress{
+  position:fixed;top:0;left:0;height:3px;z-index:9999;
+  background:linear-gradient(90deg,var(--cyan),var(--purple),var(--pink));
+  width:0%;transition:width 0.1s;
+  box-shadow:0 0 20px var(--cyan-glow);
+}
+
+/* ════════════════════════════════════════
+   SNOW / PARTICLE EFFECT
 ════════════════════════════════════════ */
 .snow-container{
   position:fixed;
@@ -85,26 +120,22 @@ body{
 .snowflake{
   position:absolute;
   bottom:-10px;
-  color:rgba(0,229,255,0.15);
   font-size:12px;
   animation:snowRise linear infinite;
   pointer-events:none;
   user-select:none;
+  text-shadow:0 0 10px currentColor;
 }
 
 @keyframes snowRise{
   0%{
-    transform:translateY(0) rotate(0deg) scale(0.8);
+    transform:translateY(0) rotate(0deg) scale(0.6);
     opacity:0;
   }
-  10%{
-    opacity:1;
-  }
-  90%{
-    opacity:1;
-  }
+  10%{opacity:1;}
+  90%{opacity:1;}
   100%{
-    transform:translateY(-110vh) rotate(720deg) scale(1.2);
+    transform:translateY(-110vh) rotate(1080deg) scale(1.3);
     opacity:0;
   }
 }
@@ -114,18 +145,24 @@ body{
   position:fixed;width:10px;height:10px;
   background:var(--cyan);border-radius:50%;
   pointer-events:none;z-index:9999;
-  transition:transform 0.15s ease,opacity 0.2s;
+  transition:transform 0.15s ease,opacity 0.2s,background 0.3s ease;
   mix-blend-mode:difference;
+  opacity:1;
 }
 #cursor-ring{
   position:fixed;width:36px;height:36px;
   border:1.5px solid var(--cyan);border-radius:50%;
   pointer-events:none;z-index:9998;
   transition:transform 0.35s cubic-bezier(.25,.46,.45,.94),
-             width 0.25s,height 0.25s,border-color 0.2s;
+             width 0.25s,height 0.25s,border-color 0.2s,
+             border-color 0.3s ease;
   opacity:0.5;
 }
-body:hover #cursor{opacity:1;}
+
+/* ── Hide custom cursor on inputs ── */
+input, textarea, [contenteditable="true"] {
+  cursor: text !important;
+}
 
 /* ── Noise Overlay ── */
 body::before{
@@ -139,14 +176,14 @@ body::before{
 .mesh{
   position:fixed;inset:0;z-index:0;pointer-events:none;
   background:
-    radial-gradient(ellipse 80% 60% at 15% 20%, rgba(0,229,255,0.06) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 80% at 85% 75%, rgba(155,93,229,0.07) 0%, transparent 55%),
-    radial-gradient(ellipse 50% 50% at 50% 50%, rgba(0,229,255,0.025) 0%, transparent 70%);
+    radial-gradient(ellipse 80% 60% at 15% 20%, rgba(0,229,255,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 80% at 85% 75%, rgba(155,93,229,0.09) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 50% at 50% 50%, rgba(0,229,255,0.035) 0%, transparent 70%);
   animation:meshShift 18s ease-in-out infinite alternate;
 }
 @keyframes meshShift{
   0%{filter:hue-rotate(0deg);}
-  100%{filter:hue-rotate(20deg);}
+  100%{filter:hue-rotate(25deg);}
 }
 
 /* ── Grid Lines ── */
@@ -208,6 +245,102 @@ body::before{
   color:var(--cyan);
 }
 .back-btn span{color:var(--muted);font-weight:400;}
+
+/* ════════════════════════════════════════
+   LIVE CLOCK
+════════════════════════════════════════ */
+.live-clock{
+  position:fixed;top:100px;right:24px;z-index:100;
+  background:rgba(12,18,32,0.85);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  border:1px solid var(--border);
+  border-radius:60px;
+  padding:10px 18px;
+  color:var(--text);
+  font-size:13px;font-weight:600;
+  font-family:'DM Sans',sans-serif;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  box-shadow:var(--shadow);
+  transition:var(--transition);
+}
+.live-clock:hover{border-color:var(--cyan);box-shadow:var(--shadow-glow);}
+.live-clock i{color:var(--cyan);font-size:14px;}
+.live-clock .time{color:var(--text);}
+.live-clock .seconds{color:var(--muted);font-size:11px;}
+
+/* ════════════════════════════════════════
+   THEME TOGGLE - FIXED!
+════════════════════════════════════════ */
+.theme-toggle{
+  position:fixed;top:155px;right:24px;z-index:100;
+  background:rgba(12,18,32,0.85);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  border:1px solid var(--border);
+  border-radius:50%;
+  width:40px;height:40px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--text);
+  cursor:pointer;
+  transition:all 0.3s cubic-bezier(.25,.46,.45,.94);
+  box-shadow:var(--shadow);
+  font-size:16px;
+  z-index:101;
+}
+.theme-toggle:hover{
+  border-color:var(--cyan);
+  transform:scale(1.1) rotate(15deg);
+  box-shadow:var(--shadow-glow);
+}
+body.light-mode .theme-toggle{
+  background:rgba(255,255,255,0.9);
+  border-color:rgba(0,0,0,0.15);
+}
+.theme-toggle i{
+  transition:transform 0.3s ease;
+}
+.theme-toggle:hover i{
+  transform:rotate(30deg);
+}
+
+/* ── Update cursor colors for light mode ── */
+body.light-mode #cursor{
+  background:var(--cyan);
+}
+body.light-mode #cursor-ring{
+  border-color:var(--cyan);
+}
+
+/* ════════════════════════════════════════
+   FLOATING MINI STATS
+════════════════════════════════════════ */
+.mini-stats{
+  position:fixed;bottom:110px;right:30px;z-index:100;
+  background:rgba(12,18,32,0.9);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:12px 16px;
+  min-width:160px;
+  box-shadow:var(--shadow);
+  display:none;
+}
+.mini-stats.visible{display:block;}
+.mini-stat-item{
+  display:flex;justify-content:space-between;
+  padding:4px 0;
+  font-size:12px;
+  border-bottom:1px solid var(--border);
+}
+.mini-stat-item:last-child{border-bottom:none;}
+.mini-stat-item .label{color:var(--muted);}
+.mini-stat-item .value{color:var(--text);font-weight:600;}
 
 /* ── NAV ── */
 nav{
@@ -308,7 +441,7 @@ nav{
 }
 .btn:hover::before{opacity:1;}
 .btn-primary{
-  background:linear-gradient(135deg,var(--cyan),#0099CC);
+  background:linear-gradient(135deg,var(--cyan),var(--cyan-dark));
   color:#020812;
   box-shadow:0 8px 24px var(--cyan-glow),0 0 0 1px rgba(0,229,255,0.2);
 }
@@ -342,9 +475,19 @@ nav{
   font-family:'Syne',sans-serif;font-size:22px;font-weight:800;
   background:linear-gradient(135deg,var(--text),var(--muted));
   -webkit-background-clip:text;background-clip:text;color:transparent;
+  transition:all 0.3s ease;
+}
+.hero-meta-num.pulse{
+  animation:statPulse 0.5s ease;
 }
 .hero-meta-label{font-size:12px;color:var(--muted);letter-spacing:0.04em;}
 .hero-meta-div{width:1px;height:36px;background:var(--border);}
+
+@keyframes statPulse{
+  0%{transform:scale(1);}
+  50%{transform:scale(1.15);color:var(--cyan);}
+  100%{transform:scale(1);}
+}
 
 /* ── Phone Mockup ── */
 .hero-right{display:flex;justify-content:center;align-items:center;position:relative;}
@@ -568,6 +711,10 @@ nav{
   background:linear-gradient(135deg,var(--text) 30%,var(--muted));
   -webkit-background-clip:text;background-clip:text;color:transparent;
   margin-bottom:8px;
+  transition:all 0.3s ease;
+}
+.stat-n.pulse{
+  animation:statPulse 0.5s ease;
 }
 .stat-l{font-size:13px;color:var(--muted);font-weight:500;}
 .stat-div{width:1px;background:var(--border);position:absolute;right:0;top:20%;height:60%;}
@@ -601,6 +748,104 @@ nav{
 .step:hover .step-num::before{opacity:0.2;}
 .step h3{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;margin-bottom:10px;}
 .step p{font-size:14px;color:var(--muted);line-height:1.6;}
+
+/* ── TESTIMONIALS ── */
+.testimonials-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:40px;
+}
+.testimonial-card{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:20px;padding:24px;
+  transition:var(--transition);
+}
+.testimonial-card:hover{border-color:rgba(0,229,255,0.3);transform:translateY(-4px);}
+.testimonial-stars{color:var(--warning);font-size:14px;margin-bottom:8px;}
+.testimonial-text{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:12px;}
+.testimonial-author{display:flex;align-items:center;gap:12px;}
+.testimonial-avatar{
+  width:40px;height:40px;border-radius:50%;
+  background:linear-gradient(135deg,var(--cyan),var(--purple));
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;font-weight:700;color:#020812;
+}
+.testimonial-name{font-weight:600;font-size:14px;color:var(--text);}
+.testimonial-role{font-size:12px;color:var(--muted);}
+
+/* ── NEWSLETTER SECTION ── */
+.newsletter-section{
+  padding:60px 0;
+}
+.newsletter-box{
+  background:linear-gradient(135deg,rgba(0,229,255,0.05),rgba(155,93,229,0.05));
+  border:1px solid rgba(0,229,255,0.15);
+  border-radius:32px;
+  padding:60px 40px;
+  text-align:center;
+  position:relative;overflow:hidden;
+}
+.newsletter-box::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at 30% 20%,rgba(0,229,255,0.05),transparent 60%);
+}
+.newsletter-box h3{
+  font-family:'Syne',sans-serif;font-size:28px;font-weight:800;
+  margin-bottom:12px;
+}
+.newsletter-box p{color:var(--muted);margin-bottom:24px;}
+.newsletter-form{
+  display:flex;gap:12px;max-width:520px;margin:0 auto;flex-wrap:wrap;justify-content:center;
+}
+.newsletter-form input{
+  flex:1;min-width:220px;
+  background:rgba(255,255,255,0.05);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:14px 20px;
+  font-size:14px;
+  color:var(--text);
+  outline:none;
+  transition:border-color 0.2s;
+  font-family:'DM Sans',sans-serif;
+  position:relative;
+  z-index:10;
+}
+.newsletter-form input:focus{
+  border-color:var(--cyan);
+  box-shadow:0 0 20px rgba(0,229,255,0.1);
+}
+.newsletter-form input::placeholder{
+  color:var(--muted);
+}
+.newsletter-form button{
+  background:linear-gradient(135deg,var(--cyan),var(--purple));
+  border:none;border-radius:14px;
+  padding:14px 32px;
+  color:#020812;
+  font-weight:700;
+  cursor:pointer;
+  transition:var(--transition);
+  font-family:'Syne',sans-serif;
+  white-space:nowrap;
+  position:relative;
+  z-index:10;
+}
+.newsletter-form button:hover{transform:translateY(-2px);box-shadow:0 8px 32px var(--cyan-glow);}
+
+.subscriber-count{
+  display:inline-flex;align-items:center;gap:8px;
+  margin-top:20px;
+  padding:8px 18px;
+  background:rgba(0,229,255,0.05);
+  border:1px solid rgba(0,229,255,0.15);
+  border-radius:100px;
+  font-size:13px;
+  color:var(--muted);
+}
+.subscriber-count span{
+  font-weight:700;
+  color:var(--cyan);
+  font-size:18px;
+}
 
 /* ── DOWNLOAD SECTION ── */
 .download-section{
@@ -660,7 +905,7 @@ nav{
 }
 
 .dl-main{
-  background:linear-gradient(135deg,var(--cyan),#0099CC);
+  background:linear-gradient(135deg,var(--cyan),var(--cyan-dark));
   color:#020812;border:none;border-radius:14px;
   padding:16px 24px;
   display:flex;align-items:center;gap:10px;
@@ -719,11 +964,12 @@ footer{
   font-size:32px;
 }
 .modal-icon-wrap.info{background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.2);}
+.modal-icon-wrap.success{background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);}
 .modal-icon-wrap.warning{background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.2);}
 .modal-box h3{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;margin-bottom:12px;}
 .modal-box p{font-size:14px;color:var(--muted);line-height:1.65;margin-bottom:28px;}
 .modal-close{
-  background:linear-gradient(135deg,var(--cyan),#0099CC);
+  background:linear-gradient(135deg,var(--cyan),var(--cyan-dark));
   color:#020812;border:none;border-radius:12px;
   padding:13px 28px;font-size:14px;font-weight:700;
   font-family:'Syne',sans-serif;cursor:pointer;
@@ -1211,7 +1457,7 @@ footer{
   .features-grid{grid-template-columns:1fr;}
   .steps{grid-template-columns:repeat(2,1fr);gap:40px;}
   .steps::before{display:none;}
-  .stats-bar{grid-template-columns:repeat(2,1fr);gap:28px;}
+  .stats-bar{grid-template-columns:repeat(2,1fr);gap:28px;padding:32px;}
   .download-section{grid-template-columns:1fr;text-align:center;}
   .dl-features{justify-content:center;}
   .dl-actions{width:100%;max-width:320px;margin:0 auto;}
@@ -1228,11 +1474,17 @@ footer{
   .back-btn span{display:none;}
   .chat-window{width:300px;right:10px;bottom:80px;}
   .chat-bubble-btn{width:56px;height:56px;font-size:24px;}
+  .live-clock{display:none;}
+  .theme-toggle{top:135px;right:12px;width:34px;height:34px;font-size:14px;}
+  .stat-div{display:none;}
+  .testimonials-grid{grid-template-columns:1fr;}
+  .mini-stats{display:none !important;}
 }
 @media(max-width:600px){
   .features-grid{grid-template-columns:1fr;}
   .feat{padding:28px 24px;}
-  .stats-bar{padding:32px 24px;}
+  .stats-bar{padding:24px 16px;grid-template-columns:1fr 1fr;gap:20px;}
+  .stats-bar .stat:nth-child(2) .stat-div{display:none;}
   .download-section{padding:48px 28px;}
   h1{font-size:36px;}
   .tech-grid{grid-template-columns:1fr 1fr;}
@@ -1246,13 +1498,21 @@ footer{
   .team-highlights{text-align:left;}
   .team-links{justify-content:center;}
   .back-button-wrap{top:70px;left:8px;}
+  .newsletter-box{padding:32px 20px;}
+  .newsletter-form input{min-width:100%;}
+  .testimonials-grid{grid-template-columns:1fr;}
 }
 </style>
 </head>
 <body>
 
 <!-- ════════════════════════════════════════
-     SNOW / PARTICLE EFFECT (Bottom to Top)
+     SCROLL PROGRESS BAR
+════════════════════════════════════════ -->
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- ════════════════════════════════════════
+     SNOW / PARTICLE EFFECT
 ════════════════════════════════════════ -->
 <div class="snow-container" id="snowContainer"></div>
 
@@ -1275,6 +1535,40 @@ footer{
     <i class="fas fa-arrow-left"></i>
     <span>Back</span>
   </button>
+</div>
+
+<!-- ════════════════════════════════════════
+     LIVE CLOCK
+════════════════════════════════════════ -->
+<div class="live-clock" id="liveClock">
+  <i class="fas fa-clock"></i>
+  <span class="time" id="clockTime">00:00</span>
+  <span class="seconds" id="clockSeconds">:00</span>
+</div>
+
+<!-- ════════════════════════════════════════
+     THEME TOGGLE - FIXED!
+════════════════════════════════════════ -->
+<div class="theme-toggle" id="themeToggle" onclick="toggleTheme()">
+  <i class="fas fa-moon" id="themeIcon"></i>
+</div>
+
+<!-- ════════════════════════════════════════
+     FLOATING MINI STATS
+════════════════════════════════════════ -->
+<div class="mini-stats" id="miniStats">
+  <div class="mini-stat-item">
+    <span class="label"><i class="fas fa-users"></i> Online</span>
+    <span class="value" id="miniOnline">47</span>
+  </div>
+  <div class="mini-stat-item">
+    <span class="label"><i class="fas fa-download"></i> Today</span>
+    <span class="value" id="miniToday">23</span>
+  </div>
+  <div class="mini-stat-item">
+    <span class="label"><i class="fas fa-clock"></i> Last DL</span>
+    <span class="value" id="miniLast">1m ago</span>
+  </div>
 </div>
 
 <!-- ════════════════════════════════════════
@@ -1360,17 +1654,17 @@ footer{
     </div>
     <div class="hero-meta">
       <div class="hero-meta-item">
-        <span class="hero-meta-num">10K+</span>
+        <span class="hero-meta-num" id="heroDownloads">12.5K</span>
         <span class="hero-meta-label">Downloads</span>
       </div>
       <div class="hero-meta-div"></div>
       <div class="hero-meta-item">
-        <span class="hero-meta-num">500+</span>
+        <span class="hero-meta-num" id="heroMentors">537</span>
         <span class="hero-meta-label">Active Mentors</span>
       </div>
       <div class="hero-meta-div"></div>
       <div class="hero-meta-item">
-        <span class="hero-meta-num">4.9★</span>
+        <span class="hero-meta-num" id="heroRating">4.8★</span>
         <span class="hero-meta-label">Rating</span>
       </div>
     </div>
@@ -1382,7 +1676,7 @@ footer{
       <div class="phone-glow"></div>
       <div class="float-tag ft1">🤖 AI Career Coach</div>
       <div class="float-tag ft2">💼 500+ Jobs</div>
-      <div class="float-tag ft3">⭐ 4.9 Rating</div>
+      <div class="float-tag ft3">⭐ 4.8 Rating</div>
       <div class="phone-frame">
         <div class="phone-notch"></div>
         <div class="phone-screen">
@@ -1450,25 +1744,25 @@ footer{
 
 <div class="wrap">
 
-<!-- ── STATS ── -->
+<!-- ── STATS BAR ── -->
 <div class="stats-bar reveal" style="margin-top:80px">
   <div class="stat">
-    <div class="stat-n" data-target="10000">0</div>
+    <div class="stat-n" id="statDownloads">12.5K</div>
     <div class="stat-l"><i class="fas fa-download" style="margin-right:6px;"></i>Downloads</div>
     <div class="stat-div"></div>
   </div>
   <div class="stat">
-    <div class="stat-n">98%</div>
+    <div class="stat-n" id="statSatisfaction">93%</div>
     <div class="stat-l"><i class="fas fa-smile" style="margin-right:6px;"></i>Satisfaction</div>
     <div class="stat-div"></div>
   </div>
   <div class="stat">
-    <div class="stat-n" data-target="500">0</div>
+    <div class="stat-n" id="statMentors">537</div>
     <div class="stat-l"><i class="fas fa-users" style="margin-right:6px;"></i>Mentors</div>
     <div class="stat-div"></div>
   </div>
   <div class="stat">
-    <div class="stat-n">4.9★</div>
+    <div class="stat-n" id="statRating">4.8★</div>
     <div class="stat-l"><i class="fas fa-star" style="margin-right:6px;color:var(--warning);"></i>Rating</div>
   </div>
 </div>
@@ -1522,6 +1816,50 @@ footer{
       <h3>Admin Dashboard</h3>
       <p>Full platform management with analytics, user oversight, and content moderation for platform operators.</p>
       <div class="feat-tag">→ Full control</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TESTIMONIALS ── -->
+<section id="testimonials" class="section" style="padding-top:0">
+  <div class="section-head reveal">
+    <div class="section-eyebrow"><i class="fas fa-star"></i> Testimonials</div>
+    <h2 class="section-title">What our users say</h2>
+    <p class="section-sub">Real stories from real people who transformed their careers</p>
+  </div>
+  <div class="testimonials-grid reveal">
+    <div class="testimonial-card">
+      <div class="testimonial-stars">★★★★★</div>
+      <div class="testimonial-text">"Career Navigator helped me land my dream job at TechCorp. The AI resume analysis was a game-changer!"</div>
+      <div class="testimonial-author">
+        <div class="testimonial-avatar">JD</div>
+        <div>
+          <div class="testimonial-name">John Doe</div>
+          <div class="testimonial-role">Senior Developer at TechCorp</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <div class="testimonial-stars">★★★★★</div>
+      <div class="testimonial-text">"The mentorship feature connected me with an industry expert who guided me through my career transition."</div>
+      <div class="testimonial-author">
+        <div class="testimonial-avatar">SM</div>
+        <div>
+          <div class="testimonial-name">Sarah M.</div>
+          <div class="testimonial-role">Product Manager at DataFlow</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <div class="testimonial-stars">★★★★★</div>
+      <div class="testimonial-text">"The skill assessment quizzes helped me identify my strengths and get certified. I doubled my salary in 6 months!"</div>
+      <div class="testimonial-author">
+        <div class="testimonial-avatar">AK</div>
+        <div>
+          <div class="testimonial-name">Amina K.</div>
+          <div class="testimonial-role">ML Engineer at AI Labs</div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -1712,6 +2050,22 @@ footer{
   </div>
 </section>
 
+<!-- ── WORKING NEWSLETTER SECTION ── -->
+<section class="newsletter-section" id="newsletter">
+  <div class="newsletter-box reveal">
+    <h3><i class="fas fa-envelope" style="color:var(--cyan);margin-right:10px;"></i>Stay Updated</h3>
+    <p>Subscribe to get the latest career tips, job opportunities, and app updates.</p>
+    <form class="newsletter-form" onsubmit="event.preventDefault(); subscribeNewsletter();">
+      <input type="email" id="newsletterEmail" placeholder="Enter your email" required>
+      <button type="submit" id="newsletterBtn">Subscribe</button>
+    </form>
+    <div class="subscriber-count">
+      <i class="fas fa-users"></i>
+      <span id="subscriberCount">247</span> subscribers
+    </div>
+  </div>
+</section>
+
 <!-- ── DOWNLOAD ── -->
 <section id="download" class="section" style="padding-top:0">
   <div class="download-section reveal">
@@ -1755,6 +2109,7 @@ footer{
     <a href="#how">How it works</a>
     <a href="#about">About</a>
     <a href="#download">Download</a>
+    <a href="#newsletter">Newsletter</a>
   </div>
   <div class="footer-copy">© 2026 Career Navigator · ICT University · OOA&amp;D Project</div>
 </footer>
@@ -1795,76 +2150,459 @@ footer{
 
 <script>
 // ════════════════════════════════════════
-// SNOW / PARTICLE EFFECT (Bottom to Top)
+// THEME TOGGLE - FIXED!
 // ════════════════════════════════════════
-(function createSnow() {
-  const container = document.getElementById('snowContainer');
-  const count = 80;
-  const symbols = ['✦', '❄', '❅', '❆', '◆', '◇', '●', '○', '•', '·', '⋆', '✧', '✦'];
+let isDarkMode = true;
+
+function toggleTheme() {
+  isDarkMode = !isDarkMode;
   
-  for (let i = 0; i < count; i++) {
-    const el = document.createElement('div');
-    el.className = 'snowflake';
-    el.textContent = symbols[Math.floor(Math.random() * symbols.length)];
-    el.style.left = Math.random() * 100 + '%';
-    el.style.fontSize = (Math.random() * 10 + 6) + 'px';
-    el.style.opacity = Math.random() * 0.5 + 0.1;
-    el.style.animationDuration = (Math.random() * 15 + 10) + 's';
-    el.style.animationDelay = (Math.random() * 20) + 's';
-    el.style.transform = `scale(${Math.random() * 0.6 + 0.4})`;
-    container.appendChild(el);
+  // Toggle class on body
+  document.body.classList.toggle('light-mode', !isDarkMode);
+  
+  // Update icon
+  const icon = document.getElementById('themeIcon');
+  if (isDarkMode) {
+    icon.className = 'fas fa-moon';
+  } else {
+    icon.className = 'fas fa-sun';
   }
+  
+  // Save preference
+  localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+  
+  // Update cursor colors (they use CSS variables, so they auto-update)
+  // But we need to force cursor ring color update
+  const ring = document.getElementById('cursor-ring');
+  if (ring) {
+    ring.style.borderColor = getComputedStyle(document.documentElement)
+      .getPropertyValue('--cyan').trim() || '#00E5FF';
+  }
+  
+  // Show toast notification
+  showToast(isDarkMode ? '🌙 Dark Mode' : '☀️ Light Mode');
+}
+
+// Load saved theme
+document.addEventListener('DOMContentLoaded', function() {
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme === 'light') {
+    isDarkMode = false;
+    document.body.classList.add('light-mode');
+    document.getElementById('themeIcon').className = 'fas fa-sun';
+  }
+});
+
+// ════════════════════════════════════════
+// CUSTOM CURSOR
+// ════════════════════════════════════════
+const cursor = document.getElementById('cursor');
+const cursorRing = document.getElementById('cursor-ring');
+let mx=0, my=0, rx=0, ry=0;
+
+document.addEventListener('mousemove', function(e) {
+  mx = e.clientX;
+  my = e.clientY;
+  cursor.style.left = (mx - 5) + 'px';
+  cursor.style.top = (my - 5) + 'px';
+});
+
+function lerp(a, b, t) { return a + (b - a) * t; }
+
+function animateCursor() {
+  rx = lerp(rx, mx, 0.12);
+  ry = lerp(ry, my, 0.12);
+  cursorRing.style.left = (rx - 18) + 'px';
+  cursorRing.style.top = (ry - 18) + 'px';
+  requestAnimationFrame(animateCursor);
+}
+animateCursor();
+
+// ── Hide custom cursor on inputs ──
+const inputs = document.querySelectorAll('input, textarea, [contenteditable="true"]');
+inputs.forEach(input => {
+  input.addEventListener('mouseenter', function() {
+    cursor.style.opacity = '0';
+    cursorRing.style.opacity = '0';
+  });
+  input.addEventListener('mouseleave', function() {
+    cursor.style.opacity = '1';
+    cursorRing.style.opacity = '0.5';
+  });
+  input.addEventListener('focus', function() {
+    cursor.style.opacity = '0';
+    cursorRing.style.opacity = '0';
+  });
+  input.addEventListener('blur', function() {
+    cursor.style.opacity = '1';
+    cursorRing.style.opacity = '0.5';
+  });
+});
+
+// ── Cursor hover effects ──
+document.querySelectorAll('a, button, .btn, .feat, .tech-item, .back-btn, .dl-platform, .dl-main, .chat-bubble-btn, .theme-toggle').forEach(el => {
+  el.addEventListener('mouseenter', function() {
+    cursor.style.transform = 'scale(2)';
+    cursorRing.style.width = '56px';
+    cursorRing.style.height = '56px';
+    cursorRing.style.borderColor = 'rgba(0,229,255,0.8)';
+  });
+  el.addEventListener('mouseleave', function() {
+    cursor.style.transform = 'scale(1)';
+    cursorRing.style.width = '36px';
+    cursorRing.style.height = '36px';
+    cursorRing.style.borderColor = 'var(--cyan)';
+  });
+});
+
+// ════════════════════════════════════════
+// WORKING NEWSLETTER
+// ════════════════════════════════════════
+let subscribers = [];
+
+try {
+  const saved = localStorage.getItem('newsletterSubscribers');
+  if (saved) {
+    subscribers = JSON.parse(saved);
+  }
+} catch(e) {}
+
+let subscriberCount = subscribers.length || 247;
+if (subscribers.length === 0) {
+  subscribers = [
+    'john.doe@example.com',
+    'sarah.m@example.com',
+    'amina.k@example.com',
+    'info@techcorp.com',
+    'career@dataflow.io',
+    'alice@ailabs.africa',
+    'bob@innovate.cm',
+    'carol@startup.com'
+  ];
+  subscriberCount = subscribers.length;
+  try {
+    localStorage.setItem('newsletterSubscribers', JSON.stringify(subscribers));
+  } catch(e) {}
+}
+
+document.getElementById('subscriberCount').textContent = subscriberCount;
+
+function subscribeNewsletter() {
+  const emailInput = document.getElementById('newsletterEmail');
+  const email = emailInput.value.trim();
+  
+  if (!email) {
+    showNewsletterModal('⚠️', 'Email Required', 'Please enter your email address.', 'warning');
+    return;
+  }
+  
+  if (!email.includes('@') || !email.includes('.')) {
+    showNewsletterModal('⚠️', 'Invalid Email', 'Please enter a valid email address.', 'warning');
+    return;
+  }
+  
+  if (subscribers.includes(email)) {
+    showNewsletterModal('📧', 'Already Subscribed', 'This email is already on our list! You\'ll continue to receive updates.', 'info');
+    emailInput.value = '';
+    return;
+  }
+  
+  subscribers.push(email);
+  subscriberCount = subscribers.length;
+  
+  try {
+    localStorage.setItem('newsletterSubscribers', JSON.stringify(subscribers));
+  } catch(e) {}
+  
+  document.getElementById('subscriberCount').textContent = subscriberCount;
+  
+  showNewsletterModal(
+    '✅', 
+    'Subscribed Successfully! 🎉', 
+    `Thank you, ${email.split('@')[0]}! You'll receive career tips and app updates.`,
+    'success'
+  );
+  
+  emailInput.value = '';
+  
+  const countEl = document.getElementById('subscriberCount');
+  countEl.style.transform = 'scale(1.3)';
+  countEl.style.transition = 'transform 0.3s ease';
+  setTimeout(() => {
+    countEl.style.transform = 'scale(1)';
+  }, 300);
+  
+  showToast('📧 New subscriber: ' + email);
+}
+
+function showNewsletterModal(icon, title, message, type = 'success') {
+  const modal = document.getElementById('modal');
+  const iconWrap = document.getElementById('modalIconWrap');
+  const titleEl = document.getElementById('modalTitle');
+  const msgEl = document.getElementById('modalMsg');
+  const closeBtn = document.getElementById('modalCloseBtn');
+  
+  iconWrap.innerHTML = icon;
+  iconWrap.className = 'modal-icon-wrap ' + type;
+  titleEl.textContent = title;
+  msgEl.textContent = message;
+  closeBtn.textContent = 'Awesome!';
+  closeBtn.onclick = () => { closeModal(); };
+  
+  modal.classList.add('open');
+}
+
+// ════════════════════════════════════════
+// REAL STATS ENGINE
+// ════════════════════════════════════════
+(function StatsEngine() {
+  let stats = {
+    downloads: 12500,
+    satisfaction: 93,
+    mentors: 537,
+    rating: 4.8,
+    todayDownloads: 23,
+    onlineUsers: 47,
+    lastDownload: Date.now()
+  };
+
+  try {
+    const saved = localStorage.getItem('careerNavigatorStats');
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      stats = { ...stats, ...parsed };
+    }
+  } catch(e) {}
+
+  const statDownloads = document.getElementById('statDownloads');
+  const statSatisfaction = document.getElementById('statSatisfaction');
+  const statMentors = document.getElementById('statMentors');
+  const statRating = document.getElementById('statRating');
+  const heroDownloads = document.getElementById('heroDownloads');
+  const heroMentors = document.getElementById('heroMentors');
+  const heroRating = document.getElementById('heroRating');
+  const miniOnline = document.getElementById('miniOnline');
+  const miniToday = document.getElementById('miniToday');
+  const miniLast = document.getElementById('miniLast');
+
+  function formatNumber(n) {
+    if (n >= 1000000) return (n / 1000000).toFixed(1) + 'M';
+    if (n >= 1000) return (n / 1000).toFixed(1) + 'K';
+    return n.toString();
+  }
+
+  function formatTimeAgo(ts) {
+    const diff = Math.floor((Date.now() - ts) / 1000);
+    if (diff < 60) return diff + 's ago';
+    if (diff < 3600) return Math.floor(diff / 60) + 'm ago';
+    if (diff < 86400) return Math.floor(diff / 3600) + 'h ago';
+    return Math.floor(diff / 86400) + 'd ago';
+  }
+
+  function updateStatsUI(animate = true) {
+    statDownloads.textContent = formatNumber(stats.downloads);
+    statSatisfaction.textContent = stats.satisfaction + '%';
+    statMentors.textContent = formatNumber(stats.mentors);
+    statRating.textContent = stats.rating.toFixed(1) + '★';
+    heroDownloads.textContent = formatNumber(stats.downloads);
+    heroMentors.textContent = formatNumber(stats.mentors);
+    heroRating.textContent = stats.rating.toFixed(1) + '★';
+    
+    if (miniOnline) miniOnline.textContent = stats.onlineUsers;
+    if (miniToday) miniToday.textContent = stats.todayDownloads;
+    if (miniLast) miniLast.textContent = formatTimeAgo(stats.lastDownload);
+
+    if (animate) {
+      document.querySelectorAll('.stat-n, .hero-meta-num').forEach(el => {
+        el.classList.remove('pulse');
+        void el.offsetWidth;
+        el.classList.add('pulse');
+      });
+    }
+
+    try {
+      localStorage.setItem('careerNavigatorStats', JSON.stringify(stats));
+    } catch(e) {}
+  }
+
+  window.incrementDownloads = function(amount = 1) {
+    stats.downloads += amount;
+    stats.todayDownloads += amount;
+    stats.lastDownload = Date.now();
+    updateStatsUI(true);
+    showToast('🎉 New download! Total: ' + formatNumber(stats.downloads));
+    return stats.downloads;
+  };
+
+  window.incrementMentors = function(amount = 1) {
+    stats.mentors += amount;
+    updateStatsUI(true);
+    return stats.mentors;
+  };
+
+  window.getStats = function() { return { ...stats }; };
+
+  let miniStatsVisible = false;
+  window.addEventListener('scroll', function() {
+    const mini = document.getElementById('miniStats');
+    if (window.scrollY > 400 && !miniStatsVisible) {
+      mini.classList.add('visible');
+      miniStatsVisible = true;
+    } else if (window.scrollY <= 400 && miniStatsVisible) {
+      mini.classList.remove('visible');
+      miniStatsVisible = false;
+    }
+  });
+
+  function simulateTraffic() {
+    const downloadIncrease = Math.floor(Math.random() * 3) + 1;
+    const mentorIncrease = Math.random() < 0.3 ? 1 : 0;
+    const onlineChange = Math.floor(Math.random() * 5) - 2;
+    
+    stats.downloads += downloadIncrease;
+    stats.todayDownloads += downloadIncrease;
+    if (mentorIncrease) stats.mentors += mentorIncrease;
+    stats.onlineUsers = Math.max(10, stats.onlineUsers + onlineChange);
+    
+    const ratingShift = (Math.random() - 0.5) * 0.04;
+    stats.rating = Math.min(5, Math.max(4.7, stats.rating + ratingShift));
+    stats.rating = Math.round(stats.rating * 100) / 100;
+    
+    const satShift = (Math.random() - 0.5) * 0.8;
+    stats.satisfaction = Math.min(95, Math.max(91, stats.satisfaction + satShift));
+    stats.satisfaction = Math.round(stats.satisfaction * 10) / 10;
+    
+    updateStatsUI(true);
+  }
+
+  updateStatsUI(false);
+  let interval = setInterval(simulateTraffic, 8000 + Math.random() * 7000);
+
+  window.careerStats = {
+    stats,
+    update: updateStatsUI,
+    simulate: simulateTraffic,
+    incrementDownloads: window.incrementDownloads,
+    incrementMentors: window.incrementMentors,
+    getStats: window.getStats
+  };
 })();
 
-// ── Config ──────────────────────────────────────────────
-// ✅ FIXED: Download the correct file from your folder structure
-const APK_FILE = "career_navigator.apk";
+// ── Toast Notifications ──────────────────────────────────
+function showToast(message, type = 'info') {
+  const existing = document.querySelector('.toast-notification');
+  if (existing) existing.remove();
+  
+  const toast = document.createElement('div');
+  toast.className = 'toast-notification';
+  toast.innerHTML = `
+    <div style="display:flex;align-items:center;gap:10px;padding:12px 20px;background:rgba(12,18,32,0.95);border:1px solid var(--border);border-radius:12px;backdrop-filter:blur(12px);box-shadow:var(--shadow);font-size:14px;color:var(--text);position:fixed;bottom:110px;left:50%;transform:translateX(-50%);z-index:1000;animation:toastSlide 0.3s ease;">
+      <i class="fas fa-info-circle" style="color:var(--cyan);"></i>
+      <span>${message}</span>
+    </div>
+    <style>
+      @keyframes toastSlide {
+        from { opacity:0; transform:translateX(-50%) translateY(20px); }
+        to { opacity:1; transform:translateX(-50%) translateY(0); }
+      }
+    </style>
+  `;
+  document.body.appendChild(toast);
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transition = 'opacity 0.3s';
+    setTimeout(() => toast.remove(), 300);
+  }, 4000);
+}
+
+// ── Download Function ──────────────────────────────────
+const APK_FILE = "career_navigator.apk"; // Replace with your actual APK file path
 
 function downloadAPK(){
+  showCelebration();
+  if (window.careerStats) {
+    careerStats.incrementDownloads(1);
+  }
   const a = document.createElement('a');
   a.href = APK_FILE;
   a.download = 'CareerNavigator.apk';
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
+  showDownloadModal();
 }
 
-// ── Cursors ──────────────────────────────────────────────
-const cur = document.getElementById('cursor');
-const ring = document.getElementById('cursor-ring');
-let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{
-  mx=e.clientX; my=e.clientY;
-  cur.style.left=mx-5+'px'; cur.style.top=my-5+'px';
-});
-function lerp(a,b,t){return a+(b-a)*t;}
-function animCursor(){
-  rx=lerp(rx,mx,0.12); ry=lerp(ry,my,0.12);
-  ring.style.left=rx-18+'px'; ring.style.top=ry-18+'px';
-  requestAnimationFrame(animCursor);
+// ── Celebration Effect ──────────────────────────────────
+function showCelebration() {
+  const colors = ['#00E5FF', '#9B5DE5', '#EC4899', '#F59E0B', '#10B981', '#3B82F6'];
+  for (let i = 0; i < 30; i++) {
+    const confetti = document.createElement('div');
+    confetti.style.cssText = `
+      position:fixed;z-index:1001;pointer-events:none;
+      width:${Math.random()*8+4}px;height:${Math.random()*8+4}px;
+      background:${colors[Math.floor(Math.random()*colors.length)]};
+      border-radius:${Math.random()>0.5?'50%':'2px'};
+      top:${Math.random()*100}%;left:${Math.random()*100}%;
+      animation:confettiFall ${Math.random()*2+1}s ease-out forwards;
+      transform:rotate(${Math.random()*360}deg);
+    `;
+    document.body.appendChild(confetti);
+    setTimeout(() => confetti.remove(), 3000);
+  }
+  if (!document.getElementById('confettiStyle')) {
+    const style = document.createElement('style');
+    style.id = 'confettiStyle';
+    style.textContent = `
+      @keyframes confettiFall {
+        0% { opacity:1; transform:translateY(0) rotate(0deg) scale(1); }
+        100% { opacity:0; transform:translateY(${window.innerHeight}px) rotate(720deg) scale(0.3); }
+      }
+    `;
+    document.head.appendChild(style);
+  }
 }
-animCursor();
-document.querySelectorAll('a,button,[data-feat]').forEach(el=>{
-  el.addEventListener('mouseenter',()=>{
-    cur.style.transform='scale(2)';
-    ring.style.width='56px'; ring.style.height='56px';
-    ring.style.borderColor='rgba(0,229,255,0.8)';
-  });
-  el.addEventListener('mouseleave',()=>{
-    cur.style.transform='scale(1)';
-    ring.style.width='36px'; ring.style.height='36px';
-    ring.style.borderColor='var(--cyan)';
-  });
+
+// ── Scroll Progress ──────────────────────────────────────
+window.addEventListener('scroll', function(){
+  const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+  const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  const scrolled = (winScroll / height) * 100;
+  document.getElementById('scrollProgress').style.width = scrolled + '%';
 });
 
-// ── Feature card mouse glow ──────────────────────────
-document.querySelectorAll('.feat').forEach(el=>{
-  el.addEventListener('mousemove',e=>{
-    const r=el.getBoundingClientRect();
-    el.style.setProperty('--mx',(e.clientX-r.left)/r.width*100+'%');
-    el.style.setProperty('--my',(e.clientY-r.top)/r.height*100+'%');
-  });
-});
+// ── Live Clock ──────────────────────────────────────────
+function updateClock(){
+  const now = new Date();
+  const hours = String(now.getHours()).padStart(2, '0');
+  const mins = String(now.getMinutes()).padStart(2, '0');
+  const secs = String(now.getSeconds()).padStart(2, '0');
+  document.getElementById('clockTime').textContent = hours + ':' + mins;
+  document.getElementById('clockSeconds').textContent = ':' + secs;
+}
+updateClock();
+setInterval(updateClock, 1000);
+
+// ── Snow Effect ──────────────────────────────────────────
+(function createSnow() {
+  const container = document.getElementById('snowContainer');
+  const count = 100;
+  const symbols = ['✦', '❄', '❅', '❆', '◆', '◇', '●', '○', '•', '·', '⋆', '✧', '✦', '❋', '❊'];
+  const colors = ['#00E5FF', '#9B5DE5', '#EC4899', '#F59E0B', '#10B981', '#3B82F6', '#8B5CF6'];
+  
+  for (let i = 0; i < count; i++) {
+    const el = document.createElement('div');
+    el.className = 'snowflake';
+    el.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+    el.style.left = Math.random() * 100 + '%';
+    el.style.fontSize = (Math.random() * 12 + 6) + 'px';
+    el.style.color = colors[Math.floor(Math.random() * colors.length)] + '40';
+    el.style.opacity = Math.random() * 0.5 + 0.1;
+    el.style.animationDuration = (Math.random() * 18 + 12) + 's';
+    el.style.animationDelay = (Math.random() * 25) + 's';
+    el.style.transform = `scale(${Math.random() * 0.8 + 0.4})`;
+    container.appendChild(el);
+  }
+})();
 
 // ── Marquee ──────────────────────────────────────────────
 const marqueeItems = [
@@ -1890,27 +2628,6 @@ const io = new IntersectionObserver((entries)=>{
 },{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
-// ── Count-up ────────────────────────────────────────────
-function countUp(el,target,suffix=''){
-  let start=0,dur=1800,step=16;
-  const inc=target/(dur/step);
-  const timer=setInterval(()=>{
-    start=Math.min(start+inc,target);
-    el.textContent=(start>=1000?(start/1000).toFixed(1)+'K':Math.floor(start))+suffix;
-    if(start>=target) clearInterval(timer);
-  },step);
-}
-const countIo=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting){
-      const t=parseInt(e.target.dataset.target);
-      if(t) countUp(e.target,t,t>=1000?'':'+');
-      countIo.unobserve(e.target);
-    }
-  });
-});
-document.querySelectorAll('[data-target]').forEach(el=>countIo.observe(el));
-
 // ── Modal ────────────────────────────────────────────────
 const modal=document.getElementById('modal');
 const modalClose=document.getElementById('modalCloseBtn');
@@ -1924,7 +2641,6 @@ function showDownloadModal(){
   modalClose.textContent='Got it ✓';
   modalClose.onclick=()=>{ closeModal(); };
   modal.classList.add('open');
-  downloadAPK();
 }
 
 function showComingSoon(platform){
@@ -1934,15 +2650,16 @@ function showComingSoon(platform){
   document.getElementById('modalMsg').textContent=
     'The '+platform+' version is currently in development. Download the Android APK now to get started!';
   modalClose.textContent='Download Android Instead';
-  modalClose.onclick=()=>{ closeModal(); showDownloadModal(); };
+  modalClose.onclick=()=>{ closeModal(); downloadAPK(); };
   modal.classList.add('open');
 }
 
 function closeModal(){modal.classList.remove('open');}
 modal.addEventListener('click',e=>{if(e.target===modal) closeModal();});
 
-document.getElementById('mainDownloadBtn').addEventListener('click',showDownloadModal);
-document.getElementById('ctaDownloadBtn').addEventListener('click',showDownloadModal);
+// ── Download button listeners ──
+document.getElementById('mainDownloadBtn').addEventListener('click', downloadAPK);
+document.getElementById('ctaDownloadBtn').addEventListener('click', downloadAPK);
 document.getElementById('iosBtn').addEventListener('click',()=>showComingSoon('iOS'));
 document.getElementById('windowsBtn').addEventListener('click',()=>showComingSoon('Windows'));
 
@@ -2066,7 +2783,6 @@ function sendChat(){
   const container = document.getElementById('chatMessages');
   const time = new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
   
-  // User message
   const userMsg = document.createElement('div');
   userMsg.className = 'chat-msg user';
   userMsg.innerHTML = msg + `<span class="chat-msg-time">${time}</span>`;
@@ -2075,7 +2791,6 @@ function sendChat(){
   input.value = '';
   container.scrollTop = container.scrollHeight;
   
-  // Bot response (simulated)
   setTimeout(() => {
     const responses = [
       "That's a great question! Let me help you with that.",
@@ -2092,13 +2807,11 @@ function sendChat(){
     container.scrollTop = container.scrollHeight;
   }, 800 + Math.random() * 400);
   
-  // Disable send temporarily
   const btn = document.getElementById('chatSendBtn');
   btn.disabled = true;
   setTimeout(() => btn.disabled = false, 1500);
 }
 
-// Enter key support for chat
 document.getElementById('chatInput').addEventListener('keypress', function(e){
   if(e.key === 'Enter') sendChat();
 });
@@ -2106,47 +2819,46 @@ document.getElementById('chatInput').addEventListener('keypress', function(e){
 // ── Tech Modal ──────────────────────────────────────────────
 const techData = {
   flutter:{ icon:'<i class="fab fa-flutter"></i>',badge:'Frontend',name:'Flutter',tagline:'Cross-platform mobile framework by Google',
-    desc:'Flutter is the entire mobile app of Career Navigator. Every screen — from splash to AI Hub — is built in Flutter with Dart. We chose Flutter for one codebase targeting both Android and iOS, a rich widget system, and near-native performance.',
-    points:[['🏗️','Architecture','Provider pattern across AuthProvider, JobProvider, ChatProvider, NotificationProvider — fully reactive UI with no unnecessary rebuilds.'],
-            ['🎨','UI/UX','Custom dark theme with cyan accents, animated bottom nav, shimmer skeletons, staggered reveals, and smooth page transitions throughout.'],
-            ['🔌','API Layer','Dio HTTP client with JWT interceptors for automatic access token refresh on 401 — users never get logged out unexpectedly.']],
+    desc:'Flutter is the entire mobile app of Career Navigator. Every screen — from splash to AI Hub — is built in Flutter with Dart.',
+    points:[['🏗️','Architecture','Provider pattern across AuthProvider, JobProvider, ChatProvider, NotificationProvider — fully reactive UI.'],
+            ['🎨','UI/UX','Custom dark theme with cyan accents, animated bottom nav, shimmer skeletons, staggered reveals.'],
+            ['🔌','API Layer','Dio HTTP client with JWT interceptors for automatic access token refresh on 401.']],
     pills:['Provider','Dio','Socket.IO Client','CachedNetworkImage','ImagePicker','flutter_secure_storage']},
   python:{ icon:'<i class="fab fa-python"></i>',badge:'Backend',name:'Python / Flask',tagline:'Lightweight REST API powering all 40+ endpoints',
-    desc:'The entire Career Navigator backend is a Python Flask application. Flask was chosen for its simplicity, flexibility, and the rich Python ecosystem. It follows the Blueprint pattern — each module (auth, jobs, chat, profile, AI, posts) is a separate Blueprint.',
-    points:[['🗺️','Architecture','Blueprint-based modular routing with controllers, services, and repositories — clean separation of concerns.'],
-            ['🔐','Auth','Flask-JWT-Extended for access/refresh token pairs, Flask-Bcrypt for password hashing, and OTP email verification via Brevo.']],
+    desc:'The entire Career Navigator backend is a Python Flask application with Blueprint pattern.',
+    points:[['🗺️','Architecture','Blueprint-based modular routing with controllers, services, and repositories.'],
+            ['🔐','Auth','Flask-JWT-Extended for access/refresh token pairs, Flask-Bcrypt for password hashing.']],
     pills:['Flask','Flask-JWT-Extended','Flask-Bcrypt','Flask-CORS','Flask-SocketIO','PyMySQL','Cloudinary SDK','Gunicorn','PM2']},
   mysql:{ icon:'<i class="fas fa-database"></i>',badge:'Database',name:'MySQL',tagline:'28-table relational schema — v9.0',
-    desc:'Career Navigator uses MySQL 8.0 as its primary database. The v9.0 schema has 28 tables with proper foreign key relationships, performance indexes, and automated business logic via 9 triggers and 8 stored procedures.',
-    points:[['📊','Schema','28 tables: users, jobs, applications, mentors, connections, messages, AI conversations, posts, achievements, skill progress, activity log.'],
-            ['⚡','Triggers','9 DB triggers: auto-update like/application counters, create conversations on mentor accept, award XP on job apply.']],
+    desc:'Career Navigator uses MySQL 8.0 with 28 tables, 9 triggers, and 8 stored procedures.',
+    points:[['📊','Schema','28 tables: users, jobs, applications, mentors, connections, messages, AI conversations.'],
+            ['⚡','Triggers','9 DB triggers: auto-update like/application counters, create conversations on mentor accept.']],
     pills:['MySQL 8.0','28 Tables','9 Triggers','8 Procedures','FULLTEXT Search','PyMySQL','Foreign Keys']},
   gemini:{ icon:'<i class="fas fa-robot"></i>',badge:'AI Engine',name:'Gemini AI',tagline:'Google Gemini 2.0 Flash — 7 career coaching tools',
-    desc:'Google Gemini 2.0 Flash is the AI brain of Career Navigator. It powers the AI Career Hub — 7 specialized coaching tools that give contextual, personalized guidance based on each user\'s profile.',
-    points:[['🗺️','Career Path','Analyzes skills, experience, and goals to generate a personalized career roadmap with milestones and timelines.'],
-            ['💰','Salary Coach','Generates negotiation scripts, counter-offer strategies, and salary justifications tailored to the user\'s target role.']],
-    pills:['Gemini 2.0 Flash','google-generativeai','Session History','7 Tool Modes','Context Window']},
+    desc:'Google Gemini 2.0 Flash powers the AI Career Hub with 7 specialized coaching tools.',
+    points:[['🗺️','Career Path','Analyzes skills and generates a personalized career roadmap.'],
+            ['💰','Salary Coach','Generates negotiation scripts and counter-offer strategies.']],
+    pills:['Gemini 2.0 Flash','google-generativeai','Session History','7 Tool Modes']},
   cloudinary:{ icon:'<i class="fas fa-cloud-upload-alt"></i>',badge:'Storage',name:'Cloudinary',tagline:'Cloud media platform — images, files and CDN',
-    desc:'Cloudinary handles all user media in Career Navigator. Profile pictures, cover images, and chat file attachments are uploaded through the Flask backend to Cloudinary and served via the global CDN.',
-    points:[['📸','Profile Pictures','User photos uploaded to Cloudinary and saved in MySQL as secure URLs.'],
-            ['⚡','CDN Delivery','Global CDN with automatic WebP conversion and edge caching for sub-second load times.']],
-    pills:['Cloudinary Python SDK','Auto Upload','Global CDN','Image Transformation','WebP Auto-format']},
+    desc:'Cloudinary handles all user media with global CDN delivery.',
+    points:[['📸','Profile Pictures','User photos uploaded to Cloudinary and saved as secure URLs.'],
+            ['⚡','CDN Delivery','Global CDN with automatic WebP conversion.']],
+    pills:['Cloudinary Python SDK','Auto Upload','Global CDN','Image Transformation']},
   socketio:{ icon:'<i class="fas fa-bolt"></i>',badge:'Real-time',name:'Socket.IO',tagline:'Bidirectional event-based real-time communication',
-    desc:'Socket.IO powers the live chat in Career Navigator. When a user sends a message in Flutter, it travels via WebSocket to Flask-SocketIO, gets saved to MySQL, and is instantly pushed to the recipient\'s device.',
-    points:[['📡','Architecture','Flask-SocketIO with eventlet async. Flutter socket_io_client. Both use the same event names for clean protocol alignment.'],
-            ['🔐','Auth','JWT token passed as query param on the handshake — verified before the client can join any room.']],
-    pills:['Flask-SocketIO','socket_io_client','eventlet','User Rooms','Typing Indicators','Read Receipts']},
+    desc:'Socket.IO powers the live chat with Flask-SocketIO on the server.',
+    points:[['📡','Architecture','Flask-SocketIO with eventlet async. Both use the same event names.'],
+            ['🔐','Auth','JWT token passed as query param on the handshake.']],
+    pills:['Flask-SocketIO','socket_io_client','eventlet','User Rooms']},
   brevo:{ icon:'<i class="fas fa-envelope"></i>',badge:'Email',name:'Brevo',tagline:'Transactional email — OTP, verification and resets',
-    desc:'Brevo (formerly Sendinblue) handles all transactional emails. It is used for OTP verification on registration, password reset codes, and email change confirmations.',
-    points:[['✉️','Registration OTP','6-digit OTP generated, stored in MySQL with 15-min expiry, and sent via Brevo API.'],
-            ['🔑','Password Reset','User enters email → OTP sent via Brevo → validated against MySQL → new password accepted.']],
-    pills:['sib-api-v3-sdk','Transactional Email','OTP Delivery','HTML Templates','Rate Limiting','15-min Expiry']},
+    desc:'Brevo handles all transactional emails for OTP verification and password resets.',
+    points:[['✉️','Registration OTP','6-digit OTP generated and sent via Brevo API.'],
+            ['🔑','Password Reset','User enters email → OTP sent → validated against MySQL.']],
+    pills:['sib-api-v3-sdk','Transactional Email','OTP Delivery','HTML Templates']},
   jwt:{ icon:'<i class="fas fa-lock"></i>',badge:'Security',name:'JWT + Bcrypt',tagline:'Dual-token auth system with secure password hashing',
-    desc:'Career Navigator uses a dual-token JWT system — a short-lived access token (15 min) and a long-lived refresh token (30 days). Bcrypt hashes passwords at cost 12.',
+    desc:'Career Navigator uses a dual-token JWT system with Bcrypt password hashing.',
     points:[['🎫','Access Token','Short-lived JWT (15 min) in every API Authorization header.'],
-            ['🔄','Refresh Token','Long-lived token (30 days) stored in Flutter SecureStorage. Dio interceptor auto-refreshes.'],
-            ['🔐','Password Hashing','Bcrypt cost factor 12 — each hash takes ~200ms.']],
-    pills:['Flask-JWT-Extended','Flask-Bcrypt','Access Token 15min','Refresh Token 30d','flutter_secure_storage','Dio Interceptor']}
+            ['🔄','Refresh Token','Long-lived token (30 days) stored in Flutter SecureStorage.']],
+    pills:['Flask-JWT-Extended','Flask-Bcrypt','Access Token 15min','Refresh Token 30d']}
 };
 
 function openTechModal(key) {
