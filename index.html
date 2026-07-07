@@ -904,6 +904,26 @@
     .dl-main:hover{transform:translateY(-2px);box-shadow:0 16px 48px var(--cyan-glow);}
     .dl-main i{font-size:20px;}
 
+    /* ── QR CODE CARD ── */
+    .dl-qr-card{
+      display:flex;align-items:center;gap:14px;
+      background:rgba(255,255,255,0.04);
+      border:1px solid rgba(0,229,255,0.18);
+      border-radius:16px;padding:14px 16px;
+      margin-bottom:4px;
+    }
+    .dl-qr-card img{
+      width:76px;height:76px;border-radius:10px;
+      background:#fff;padding:5px;
+      box-shadow:0 6px 20px rgba(0,229,255,0.15);
+      flex-shrink:0;
+    }
+    .dl-qr-text{display:flex;flex-direction:column;gap:2px;}
+    .dl-qr-text strong{
+      font-family:'Syne',sans-serif;font-size:13px;color:var(--text);font-weight:700;
+    }
+    .dl-qr-text span{font-size:11px;color:var(--muted);line-height:1.5;}
+
     /* ── FOOTER ── */
     footer{
       padding:48px 0;
@@ -1448,6 +1468,7 @@
       .download-section{grid-template-columns:1fr;text-align:center;}
       .dl-features{justify-content:center;}
       .dl-actions{width:100%;max-width:320px;margin:0 auto;}
+      .dl-qr-card{justify-content:center;text-align:left;}
       footer{flex-direction:column;gap:20px;text-align:center;}
       .nav-links{display:none;}
       .wrap{padding:0 20px;}
@@ -2070,6 +2091,13 @@
         </div>
       </div>
       <div class="dl-actions">
+        <div class="dl-qr-card">
+          <img src="data:image/png;base64,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" alt="QR code — scan to download Career Navigator">
+          <div class="dl-qr-text">
+            <strong>Scan to download</strong>
+            <span>Point your phone camera at the code to open careernavigator.duckdns.org</span>
+          </div>
+        </div>
         <button class="dl-main" id="ctaDownloadBtn">
           <i class="fas fa-download"></i>
           Download for Android
